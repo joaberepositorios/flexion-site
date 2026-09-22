@@ -10,7 +10,7 @@
   <meta property="og:title" content="Flexion — École de Français" />
   <meta property="og:description" content="Francês, inglês, alemão e português para estrangeiros." />
   <meta property="og:image" content="images/paris-hero.webp" />
-  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="icon" type="image/png" href="favicon.png" />
 
   <!-- Uma tipografia por país: Garamond (França), Libre Franklin ≈ Franklin Gothic (Estados Unidos),
        Barlow ≈ DIN (Alemanha) e Raleway, base da fonte do gov.br (Brasil). -->
@@ -100,7 +100,9 @@
     /* ───────── Cabeçalho ───────── */
     .header { position: fixed; inset: 0 0 auto 0; z-index: 50; background: var(--white); color: var(--ink); box-shadow: 0 1px 0 var(--line); }
     .header .container { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; height: 84px; }
-    .brand { display: grid; font-family: var(--fr); font-size: 1.7rem; line-height: 1; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; }
+    .brand { display: flex; align-items: center; gap: 12px; font-family: var(--fr); font-size: 1.7rem; line-height: 1; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; }
+    .brand img { height: 44px; width: auto; }
+    .brand span { display: grid; }
     .brand small { font-family: var(--pt); font-size: 0.58rem; letter-spacing: 0.3em; margin-top: 4px; color: var(--bleu); }
     .header nav { display: flex; gap: clamp(18px, 2.4vw, 36px); }
     .header nav a { padding: 6px 0; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; border-bottom: 2px solid transparent; transition: border-color 0.3s, color 0.3s; }
@@ -400,6 +402,8 @@
     .footer { margin-top: clamp(56px, 7vw, 96px); background: var(--nuit); color: rgba(255, 255, 255, 0.82); font-size: 0.9rem; }
     .footer__row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 40px; padding-block: 26px; }
     .footer strong { color: var(--white); font-weight: 600; }
+    .footer__brand { display: flex; align-items: center; gap: 12px; }
+    .footer__brand img { height: 36px; width: auto; }
     .footer nav { display: flex; flex-wrap: wrap; gap: 8px 24px; }
     .footer a { text-decoration: none; }
     .footer a:hover { color: var(--white); text-decoration: underline; text-underline-offset: 5px; }
@@ -411,8 +415,8 @@
     @media (max-width: 760px) {
       .plans { grid-template-columns: 1fr; }
       .header .container { grid-template-columns: auto 1fr; height: 72px; gap: 12px; }
-      .brand { font-size: 1.3rem; }
-      .brand small { display: none; }
+      .brand img { height: 36px; }
+      .brand span { display: none; }
       .header nav { justify-content: flex-end; gap: 14px; }
       .header nav a { font-size: 0.72rem; }
       .header nav a[href="#inicio"], .header__social { display: none; }
@@ -481,7 +485,7 @@
 
   <header class="header">
     <div class="container">
-      <a class="brand" href="#inicio">Flexion<small>École de Français</small></a>
+      <a class="brand" href="#inicio"><img src="images/logo.webp" alt="" width="176" height="90" /><span>Flexion<small>École de Français</small></span></a>
       <nav aria-label="Navegação principal">
         <a href="#inicio">Início</a>
         <a href="#idiomas">Idiomas</a>
@@ -742,7 +746,7 @@
 
       <footer class="footer">
         <div class="container footer__row">
-          <p><strong>Flexion</strong> — École de Français</p>
+          <p class="footer__brand"><img src="images/logo.webp" alt="" width="176" height="90" loading="lazy" /><span><strong>Flexion</strong> — École de Français</span></p>
           <nav aria-label="Rodapé">
             <a href="#inicio">Início</a>
             <a href="#idiomas">Idiomas</a>
