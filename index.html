@@ -195,7 +195,7 @@
 
     .reviews { display: flex; flex-wrap: wrap; justify-content: center; gap: clamp(10px, 1.2vw, 16px); margin: clamp(40px, 5vh, 60px) 0 0; padding: 0; list-style: none; }
     .reviews li {
-      flex: 1 1 160px; max-width: 220px; display: grid; justify-items: center; gap: 8px;
+      flex: 1 1 220px; max-width: 300px; display: grid; justify-items: center; gap: 8px;
       padding: 22px 18px 20px; border: 1px solid var(--line); border-radius: 4px; background: var(--white); text-align: center;
       opacity: 0; transform: translateY(18px);
       transition: opacity 0.8s var(--ease), transform 0.8s var(--ease); transition-delay: calc(var(--i) * 90ms);
@@ -551,14 +551,13 @@
 
         <div class="place reveal">
           <div class="place__text">
-            <p class="label">Onde estamos</p>
             <p class="place__big">Ao lado da <em>UFU</em></p>
             <p class="place__addr">Rua Francisco Vicente Ferreira, 180<br />Uberlândia — MG</p>
             <a class="arrow-link" href="https://www.google.com/maps/dir/?api=1&destination=Rua+Francisco+Vicente+Ferreira+180,+Uberl%C3%A2ndia+-+MG" target="_blank" rel="noopener noreferrer">Como chegar <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow" /></svg></a>
           </div>
           <div class="place__map">
             <iframe
-              src="https://www.google.com/maps?q=Rua+Francisco+Vicente+Ferreira+180,+Uberl%C3%A2ndia+-+MG&z=16&output=embed"
+              src="https://www.google.com/maps?q=Rua+Francisco+Vicente+Ferreira+180,+Uberl%C3%A2ndia+-+MG&z=15&output=embed"
               title="Mapa: Flexion, Rua Francisco Vicente Ferreira 180, Uberlândia"
               loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
           </div>
@@ -799,7 +798,7 @@
          curso → ex.: "Estudante da UFU · Francês"
          foto  → caminho da foto (ex.: "images/avaliacoes/ana.jpg"), quadrada; "" = sem foto
          texto → o depoimento
-       Enquanto a lista estiver vazia, o site mostra 5 espaços "a preencher". */
+       Enquanto a lista estiver vazia, o site mostra 3 espaços "a preencher". */
     const AVALIACOES = [
     ];
 
@@ -807,7 +806,7 @@
     const ESTRELAS = '<span class="stars" aria-label="5 de 5 estrelas">' + '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 2 3 6.6 7 .8-5.200 4.800 1.400 7L12 17.700 5.800 21.200l1.400-7L2 9.400l7-.8z"/></svg>'.repeat(5) + "</span>";
     const SILHUETA = '<span class="avatar" aria-hidden="true"><svg viewBox="0 0 80 96" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><circle cx="40" cy="34" r="16"/><path d="M10 94c2-20 14-30 30-30s28 10 30 30"/></svg></span>';
     const vazias = AVALIACOES.length === 0;
-    const listaAv = vazias ? Array.from({ length: 5 }, () => ({ nome: "Nome do aluno", curso: "Estudante da UFU", foto: "", texto: "Depoimento a preencher." })) : AVALIACOES;
+    const listaAv = vazias ? Array.from({ length: 3 }, () => ({ nome: "Nome do aluno", curso: "Estudante da UFU", foto: "", texto: "Depoimento a preencher." })) : AVALIACOES;
     const reviews = document.getElementById("reviews");
     listaAv.forEach((r, i) => {
       const li = document.createElement("li");
