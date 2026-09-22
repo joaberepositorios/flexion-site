@@ -219,8 +219,6 @@
     .pin__photo::after { content: ""; position: absolute; inset: 0; background: var(--nuit); opacity: var(--dim, 0); pointer-events: none; }
     .pin__photo + .pin__photo { transform: translateY(100%); will-change: transform; }
     .pin__photo + .pin__photo img { transform: translateY(-100%); }
-    .pin__photo, .pin__photo img { transition: transform 0.35s linear; }
-    .pin__photo::after { transition: opacity 0.35s linear; }
     /* Bandeira do idioma, esmaecida e fundida à fotografia */
     .pin__flag {
       position: absolute; inset: 0; width: 100%; height: 100%;
@@ -416,6 +414,26 @@
       .contact__grid { grid-template-columns: 1fr; }
       .footer__row { flex-direction: column; align-items: flex-start; }
       .motifs { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 36px; }
+    }
+
+    /* ───────── Celular: introdução em fluxo (texto em cima, retrato embaixo, sem sobreposição) ───────── */
+    @media (max-width: 760px) {
+      .hero { min-height: 640px; }
+      .hero__frame { display: flex; flex-direction: column; align-items: stretch; }
+      .hero__content { order: -1; flex: none; padding-top: clamp(28px, 5svh, 56px); gap: 18px; }
+      .hero__content .btn { margin-bottom: 8px; }
+      .hero__title { font-size: clamp(1.75rem, 7.6vw, 2.4rem); }
+      .hero__group { position: relative; right: auto; bottom: auto; translate: none; flex: 1 1 auto; min-height: 0; height: auto; margin-top: 24px; display: flex; justify-content: center; align-items: flex-end; }
+      .hero__portrait { height: 100%; width: auto; max-width: 78%; object-fit: contain; object-position: bottom; }
+      .hero__scroll { display: none; }
+
+      /* Contato centralizado, como as demais seções */
+      .contact__info { justify-items: center; text-align: center; }
+      .contact__lead { margin-inline: auto; }
+      .channels { justify-items: center; }
+      .channels a, .channels div { text-align: left; }
+      .footer__row { align-items: center; text-align: center; }
+      .footer nav { justify-content: center; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -849,11 +867,74 @@
     addEventListener("resize", onScroll);
     update();
 
+    /* ═══ Idiomas: um idioma por rolada ═══
+       Dentro da seção presa, cada gesto (roda, dedo ou seta) leva a página até a posição do próximo
+       idioma, em ~0,8 s; enquanto desliza, novos gestos são ignorados. Nas pontas, a página segue. */
+    const pinTop = () => pin.getBoundingClientRect().top + scrollY;
+    const stepPx = () => (pin.offsetHeight - innerHeight) / (N - 1);
+    let sliding = false;
+
+    function glideTo(y) {
+      sliding = true;
+      const y0 = scrollY, d = y - y0, t0 = performance.now(), dur = reduced ? 0 : 800;
+      const frame = (t) => {
+        const k = dur ? clamp((t - t0) / dur) : 1, e = 1 - Math.pow(1 - k, 3);
+        scrollTo({ top: y0 + d * e, behavior: "instant" });
+        if (k < 1) requestAnimationFrame(frame); else setTimeout(() => { sliding = false; }, 120);
+      };
+      requestAnimationFrame(frame);
+    }
+
+    // Devolve o índice-alvo para o gesto, ou null quando a rolagem deve seguir normal
+    function target(dir) {
+      const r = pin.getBoundingClientRect(), vh = innerHeight;
+      const inside = r.top <= 2 && r.bottom >= vh - 2;
+      if (inside) {
+        const i = Math.round(-r.top / stepPx()) + dir;
+        return i < 0 || i >= N ? null : i;
+      }
+      if (dir > 0 && r.top > 0 && r.top < vh * 0.6) return 0;                       // chegando por cima
+      if (dir < 0 && r.bottom < vh * 1.6 && r.bottom > vh * 0.5 && r.top < 0) return N - 1;   // chegando por baixo
+      return null;
+    }
+
+    function gesture(dir) {
+      if (sliding) return true;
+      const i = target(dir);
+      if (i === null) return false;
+      glideTo(pinTop() + i * stepPx());
+      return true;
+    }
+
+    addEventListener("wheel", (e) => {
+      if (Math.abs(e.deltaY) < 4) return;
+      if (gesture(Math.sign(e.deltaY))) e.preventDefault();
+    }, { passive: false });
+
+    let touchY = null;
+    addEventListener("touchstart", (e) => { touchY = e.touches[0].clientY; }, { passive: true });
+    addEventListener("touchmove", (e) => {
+      if (touchY === null) return;
+      const dy = touchY - e.touches[0].clientY, dir = Math.sign(dy);
+      if (!dir) return;
+      const r = pin.getBoundingClientRect();
+      const inside = r.top <= 2 && r.bottom >= innerHeight - 2;
+      if (!inside && !sliding) return;                       // fora da seção: rolagem normal
+      if (target(dir) === null && !sliding) return;          // ponta da lista: libera
+      e.preventDefault();
+      if (Math.abs(dy) > 30 && !sliding) { gesture(dir); touchY = e.touches[0].clientY; }
+    }, { passive: false });
+    addEventListener("touchend", () => { touchY = null; });
+
+    addEventListener("keydown", (e) => {
+      const dir = e.key === "ArrowDown" || e.key === "PageDown" ? 1 : e.key === "ArrowUp" || e.key === "PageUp" ? -1 : 0;
+      if (dir && gesture(dir)) e.preventDefault();
+    });
+
     // Clicar em um idioma leva ao ponto dele na rolagem
     [...names, ...$$(".hero__flags a")].forEach((a) => a.addEventListener("click", (e) => {
       e.preventDefault();
-      const top = pin.getBoundingClientRect().top + scrollY;
-      scrollTo({ top: top + (+a.dataset.i / (N - 1)) * (pin.offsetHeight - innerHeight), behavior: reduced ? "auto" : "smooth" });
+      glideTo(pinTop() + (+a.dataset.i) * stepPx());
     }));
 
     // Entrada suave dos textos
