@@ -18,7 +18,7 @@ O QUE EDITAR (tudo dentro de index.html, no bloco <script> do fim do arquivo)
   - NUMEROS: alunos, intercâmbios e viagens. Hoje são DE EXEMPLO; ao colocar os reais,
     mude EXEMPLO para false e as etiquetas "exemplo" somem.
   - Planos e preços: procure por id="planos" (texto direto no HTML).
-  - Ilustração da introdução (Torre Eiffel + mancha creme): é um SVG dentro do index.html, procure por class="hero__art".
+  - Ilustração da introdução (cartão-postal do Louvre em gravura): SVG dentro do index.html, procure por class="hero__art".
   - Vídeo: video/paris.mp4 (desktop) e video/paris-mobile.mp4 (celular). O azul é aplicado por CSS.
 
 SEÇÃO DE IDIOMAS
