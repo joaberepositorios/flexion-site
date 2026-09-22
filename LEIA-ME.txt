@@ -1,0 +1,32 @@
+FLEXION — ÉCOLE DE FRANÇAIS · site estático
+
+COMO ABRIR
+  Dê dois cliques em index.html. Não precisa de servidor, instalação nem localhost.
+  (As fontes vêm do Google Fonts; sem internet o site usa fontes do sistema equivalentes.)
+
+COMO PUBLICAR
+  Envie a pasta inteira (index.html + images + video + favicon.svg) para qualquer hospedagem.
+
+ESTRUTURA
+  1 Introdução (vídeo + FLEXION + frase + botão) · 2 A experiência Flexion (números)
+  3 Idiomas (presa na tela; a rolagem conduz a troca) · 4 Cultura e jornada · 5 Planos · 6 Contato (dados + formulário)
+
+O QUE EDITAR (tudo dentro de index.html, no bloco <script> do fim do arquivo)
+  - WHATSAPP: número da escola, só dígitos, com DDI e DDD. Ex.: "5511999999999".
+    Vazio = o visitante escolhe o contato no WhatsApp. O formulário também envia por ele.
+  - CONTATOS: e-mails, telefone, Instagram e endereço. Apague a linha do que não for usar.
+  - NUMEROS: alunos, intercâmbios e viagens. Hoje são DE EXEMPLO; ao colocar os reais,
+    mude EXEMPLO para false e as etiquetas "exemplo" somem.
+  - Planos e preços: procure por id="planos" (texto direto no HTML).
+  - Retrato da introdução: substitua images/retrato.webp (PNG/WebP com fundo transparente).
+  - Vídeo: video/paris.mp4 (desktop) e video/paris-mobile.mp4 (celular). O azul é aplicado por CSS.
+
+SEÇÃO DE IDIOMAS
+  A seção fica presa na tela e a rolagem conduz a troca: cada idioma consome ~340px de rolagem
+  (≈ uma rolada de roda). Para mudar, procure  --step: 340px  no CSS.
+
+TIPOGRAFIA POR PAÍS
+  Francês: EB Garamond · Inglês: Gill Sans (Cabin) · Alemão: DIN (Bahnschrift/Barlow) · Português e textos gerais: Raleway
+
+CRÉDITOS
+  Vídeo: Mixkit (licença gratuita). Fotografias: Unsplash.
