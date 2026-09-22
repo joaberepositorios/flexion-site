@@ -170,7 +170,7 @@
       text-align: center;
     }
     .proof + .pin { margin-top: -44px; }
-    .proof .container { max-width: 960px; }
+    .proof .container { max-width: 1120px; }
     .proof .label { color: var(--bleu); margin-bottom: 16px; }
     .proof h2 { font-family: var(--fr); font-weight: 400; line-height: 1.06; font-size: clamp(1.8rem, 3vw, 2.7rem); letter-spacing: -0.01em; }
     .proof h2 em { color: var(--bleu); }
@@ -192,6 +192,24 @@
 
     .stats strong { display: block; font-family: var(--fr); font-weight: 400; font-size: clamp(2.4rem, 4.2vw, 3.6rem); line-height: 1; color: var(--bleu); font-variant-numeric: lining-nums tabular-nums; }
     .stats li > span { display: block; margin: 8px auto 0; max-width: 24ch; font-size: 0.92rem; line-height: 1.45; color: rgba(14, 26, 54, 0.75); }
+
+    .reviews { display: flex; flex-wrap: wrap; justify-content: center; gap: clamp(10px, 1.2vw, 16px); margin: clamp(40px, 5vh, 60px) 0 0; padding: 0; list-style: none; }
+    .reviews li {
+      flex: 1 1 160px; max-width: 220px; display: grid; justify-items: center; gap: 8px;
+      padding: 22px 18px 20px; border: 1px solid var(--line); border-radius: 4px; background: var(--white); text-align: center;
+      opacity: 0; transform: translateY(18px);
+      transition: opacity 0.8s var(--ease), transform 0.8s var(--ease); transition-delay: calc(var(--i) * 90ms);
+    }
+    .reviews.in li { opacity: 1; transform: none; }
+    .reviews img, .reviews .avatar { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; background: #e9f0fd; color: rgba(27, 86, 201, 0.5); display: grid; place-items: center; }
+    .reviews .avatar svg { width: 60%; }
+    .reviews .stars { display: flex; gap: 2px; color: #f2b01e; }
+    .reviews .stars svg { width: 14px; height: 14px; }
+    .reviews strong { font-size: 0.98rem; font-weight: 600; line-height: 1.2; }
+    .reviews small { display: block; margin-top: -4px; font-size: 0.74rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--bleu); }
+    .reviews blockquote { margin: 6px 0 0; font-family: var(--fr); font-style: italic; font-size: 1rem; line-height: 1.35; color: rgba(14, 26, 54, 0.85); text-wrap: pretty; }
+    .reviews .is-empty { border-style: dashed; }
+    .reviews .is-empty strong, .reviews .is-empty blockquote { opacity: 0.45; }
 
     /* Seta discreta sobre o recorte */
     .proof__next {
@@ -411,6 +429,7 @@
       .stats strong { font-size: 2rem; }
       .stats li > span { font-size: 0.74rem; }
       .stats .sample { margin: 4px 0 0; }
+      .reviews li { flex-basis: 100%; max-width: none; }
       .contact__grid { grid-template-columns: 1fr; }
       .footer__row { flex-direction: column; align-items: flex-start; }
       .motifs { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 36px; }
@@ -441,7 +460,7 @@
       .mark path { animation: none; stroke-dashoffset: 0; }
       .pin__greetings i, .pin__cta a, .pin__list a::after, .pin__photo, .pin__photo img, .pin__photo::after { transition: none; }
       .hero__scroll svg, .proof__next svg { animation: none; }
-      .lines b, .stats li, .stats li::before, .motifs li, .motifs li::before, .plans > li { transition: none; transform: none; opacity: 1; }
+      .lines b, .stats li, .stats li::before, .reviews li, .motifs li, .motifs li::before, .plans > li { transition: none; transform: none; opacity: 1; }
       .reveal, .hero__title b, .hero .btn, .hero__scroll, .hero__portrait, .hero__flags { animation: none; transition: none; opacity: 1; transform: none; }
     }
   </style>
@@ -516,6 +535,9 @@
         </h2>
 
         <ul class="stats" id="stats"></ul>
+
+        <!-- Avaliações: preenchidas pelo script a partir de AVALIACOES (fim do arquivo) -->
+        <ul class="reviews" id="reviews"></ul>
       </div>
       <a class="proof__next" href="#idiomas" aria-label="Continuar para Idiomas">
         <svg width="14" height="22" viewBox="0 0 14 22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 1v19M1 14l6 6 6-6" /></svg>
@@ -736,17 +758,44 @@
     const MENSAGEM = "Olá, Flexion! Gostaria de saber mais sobre os cursos de idiomas.";
 
     /* ═══ NÚMEROS ═══
-       ⚠ Os valores abaixo são DE EXEMPLO, só para visualizar o layout. Não são dados da escola.
-       Troque pelos números reais e então mude EXEMPLO para false — as etiquetas "exemplo" somem do site. */
-    const EXEMPLO = true;
+       ⚠ "300+" e "40+" ainda são valores provisórios (não vieram da escola): confirme ou corrija.
+       EXEMPLO = true volta a exibir a etiqueta "exemplo" ao lado de cada número. */
+    const EXEMPLO = false;
 
     const NUMEROS = [
       { valor: 300, sufixo: "+", rotulo: "alunos já passaram pela Flexion" },
       { valor: 40,  sufixo: "+", rotulo: "intercâmbios realizados" },
-      { valor: 25,  sufixo: "+", rotulo: "viagens feitas com o idioma na bagagem" },
+      { valor: 20,  sufixo: "+", rotulo: "viagens para o exterior com as habilidades da Flexion" },
+    ];
+
+    /* ═══ AVALIAÇÕES ═══
+       Cole aqui avaliações REAIS, com autorização de quem escreveu. Uma linha por pessoa:
+         nome  → como deve aparecer (pode ser só o primeiro nome)
+         curso → ex.: "Estudante da UFU · Francês"
+         foto  → caminho da foto (ex.: "images/avaliacoes/ana.jpg"), quadrada; "" = sem foto
+         texto → o depoimento
+       Enquanto a lista estiver vazia, o site mostra 5 espaços "a preencher". */
+    const AVALIACOES = [
     ];
 
     const ETIQUETA = EXEMPLO ? '<span class="sample">exemplo</span>' : "";
+    const ESTRELAS = '<span class="stars" aria-label="5 de 5 estrelas">' + '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="m12 2 3 6.6 7 .8-5.200 4.800 1.400 7L12 17.700 5.800 21.200l1.400-7L2 9.400l7-.8z"/></svg>'.repeat(5) + "</span>";
+    const SILHUETA = '<span class="avatar" aria-hidden="true"><svg viewBox="0 0 80 96" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><circle cx="40" cy="34" r="16"/><path d="M10 94c2-20 14-30 30-30s28 10 30 30"/></svg></span>';
+    const vazias = AVALIACOES.length === 0;
+    const listaAv = vazias ? Array.from({ length: 5 }, () => ({ nome: "Nome do aluno", curso: "Estudante da UFU", foto: "", texto: "Depoimento a preencher." })) : AVALIACOES;
+    const reviews = document.getElementById("reviews");
+    listaAv.forEach((r, i) => {
+      const li = document.createElement("li");
+      li.style.setProperty("--i", i);
+      if (vazias) li.className = "is-empty";
+      li.innerHTML = (r.foto ? '<img alt="" width="64" height="64" loading="lazy">' : SILHUETA) + "<strong></strong><small></small>" + ESTRELAS + "<blockquote></blockquote>";
+      if (r.foto) { const img = li.querySelector("img"); img.src = r.foto; img.alt = r.nome; }
+      li.querySelector("strong").textContent = r.nome;
+      li.querySelector("small").textContent = r.curso;
+      li.querySelector("blockquote").textContent = "\u201C" + r.texto + "\u201D";
+      reviews.append(li);
+    });
+
     const stats = document.getElementById("stats");
     NUMEROS.forEach((n, i) => {
       const li = document.createElement("li");
@@ -941,7 +990,7 @@
     const io = new IntersectionObserver((entries) => entries.forEach((en) => {
       if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
     }), { rootMargin: "0px 0px -12% 0px" });
-    $$(".reveal, .lines, .stats, .motifs, .plans").forEach((el) => io.observe(el));
+    $$(".reveal, .lines, .stats, .reviews, .motifs, .plans").forEach((el) => io.observe(el));
 
     // Números: contam de zero até o valor quando entram na tela
     const counter = new IntersectionObserver((entries) => entries.forEach((en) => {
