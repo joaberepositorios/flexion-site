@@ -499,7 +499,7 @@
     <!-- 1 · Introdução: vídeo escurecido + título -->
     <section id="inicio" class="hero" data-dark>
       <div class="hero__frame">
-        <video class="hero__media" poster="images/paris-hero.webp" autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+        <video class="hero__media" poster="images/paris-hero.webp" autoplay muted loop playsinline webkit-playsinline preload="auto" disablepictureinpicture disableremoteplayback aria-hidden="true">
           <source src="video/paris-mobile.mp4" type="video/mp4" media="(max-width: 760px)" />
           <source src="video/paris.mp4" type="video/mp4" />
         </video>
@@ -1032,10 +1032,18 @@
     }), { threshold: 0.6 });
     $$("[data-count]").forEach((el) => counter.observe(el));
 
-    // Autoplay: alguns navegadores só tocam se `muted` for definido por script
+    /* Vídeo da introdução: sempre rodando.
+       Celulares em economia de energia/dados bloqueiam o autoplay até um toque; por isso o vídeo
+       tenta tocar ao carregar, no primeiro toque/rolagem, ao voltar para a tela e sempre que for pausado. */
     const video = $("video");
-    if (reduced) { video.removeAttribute("autoplay"); video.pause(); }
-    else { video.muted = true; video.play().catch(() => {}); }
+    video.muted = true; video.defaultMuted = true; video.loop = true;
+    const tocar = () => { if (video.paused) video.play().catch(() => {}); };
+    tocar();
+    video.addEventListener("loadeddata", tocar);
+    video.addEventListener("pause", () => { if (!document.hidden) setTimeout(tocar, 150); });
+    ["touchstart", "touchend", "click", "scroll", "keydown"].forEach((ev) => addEventListener(ev, tocar, { passive: true }));
+    document.addEventListener("visibilitychange", () => { if (!document.hidden) tocar(); });
+    new IntersectionObserver((en) => { if (en[0].isIntersecting) tocar(); }, { threshold: 0.1 }).observe(video);
   </script>
 </body>
 </html>
