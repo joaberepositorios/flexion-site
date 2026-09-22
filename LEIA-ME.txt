@@ -12,9 +12,9 @@ ESTRUTURA
   3 Idiomas (presa na tela; a rolagem conduz a troca) · 4 Cultura e jornada · 5 Planos · 6 Contato (dados + formulário)
 
 O QUE EDITAR (tudo dentro de index.html, no bloco <script> do fim do arquivo)
-  - WHATSAPP: número da escola, só dígitos, com DDI e DDD. Ex.: "5511999999999".
-    Vazio = o visitante escolhe o contato no WhatsApp. O formulário também envia por ele.
-  - CONTATOS: e-mails, telefone, Instagram e endereço. Apague a linha do que não for usar.
+  - WHATSAPP: já preenchido (553432175950). O botão flutuante e o formulário usam esse número.
+  - CONTATOS: Instagram e telefone preenchidos; a linha do e-mail está comentada — tire as barras e preencha.
+  - Mapa/endereço: seção "A experiência Flexion", procure por class="place".
   - NUMEROS: alunos, intercâmbios e viagens. Hoje são DE EXEMPLO; ao colocar os reais,
     mude EXEMPLO para false e as etiquetas "exemplo" somem.
   - Planos e preços: procure por id="planos" (texto direto no HTML).

@@ -211,6 +211,14 @@
     .reviews .is-empty { border-style: dashed; }
     .reviews .is-empty strong, .reviews .is-empty blockquote { opacity: 0.45; }
 
+    .place { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(24px, 4vw, 56px); align-items: center; margin-top: clamp(48px, 6vh, 72px); text-align: left; }
+    .place .label { color: var(--bleu); margin-bottom: 12px; }
+    .place__big { font-family: var(--fr); font-size: clamp(2rem, 3.6vw, 3.2rem); line-height: 1.05; }
+    .place__big em { font-style: normal; color: var(--bleu); background: linear-gradient(transparent 62%, rgba(27, 86, 201, 0.16) 62%); }
+    .place__addr { margin: 14px 0 18px; color: rgba(14, 26, 54, 0.75); line-height: 1.5; }
+    .place__map { aspect-ratio: 16 / 10; border: 1px solid var(--line); background: #e9eef7; }
+    .place__map iframe { width: 100%; height: 100%; border: 0; display: block; }
+
     /* Seta discreta sobre o recorte */
     .proof__next {
       position: absolute; left: 50%; bottom: 18px; transform: translateX(-50%);
@@ -306,13 +314,13 @@
     }
     /* Véu sobre a foto do Louvre: mantém os cards como ponto de luz */
     .pricing::before { content: ""; position: absolute; inset: 0; background: linear-gradient(rgba(11, 24, 56, 0.86), rgba(11, 24, 56, 0.72) 40%, rgba(11, 24, 56, 0.9)); }
-    .pricing .container { position: relative; }
-    .pricing h2 { text-align: center; font-family: var(--fr); font-weight: 400; line-height: 1; letter-spacing: 0.04em; text-transform: uppercase; font-size: clamp(2.6rem, 5vw, 4.4rem); color: var(--white); }
+    .pricing .container { position: relative; max-width: 1040px; }
+    .pricing h2 { text-align: center; font-family: var(--fr); font-weight: 400; line-height: 1; letter-spacing: 0.04em; text-transform: uppercase; font-size: clamp(2rem, 3.4vw, 3rem); color: var(--white); }
     .pricing .label { color: #8db6ff; text-align: center; margin-bottom: 14px; }
     .plans { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(16px, 1.6vw, 24px); margin: clamp(28px, 3vw, 44px) 0 0; padding: 0; list-style: none; font-variant-numeric: lining-nums tabular-nums; }
     .plans > li {
       position: relative; display: flex; flex-direction: column; overflow: hidden;
-      padding: clamp(24px, 2.2vw, 32px);
+      padding: clamp(18px, 1.8vw, 24px);
       background: linear-gradient(180deg, #eef3fd 0, var(--white) 34%);
       border: 0; border-radius: 0;
       box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.7);
@@ -335,21 +343,21 @@
     .plan__people svg { width: 16px; height: 16px; margin-inline: -1.5px; }
     .plan__people b { margin-left: 3px; font-size: 0.8rem; line-height: 1; }
 
-    .plan__kicker { margin-top: 26px; font-size: 0.8rem; color: rgba(14, 26, 54, 0.6); }
-    .plan__price { display: flex; align-items: flex-start; gap: 6px; font-family: var(--fr); font-size: clamp(2.6rem, 3.5vw, 3.3rem); line-height: 1; font-variant-numeric: lining-nums; }
+    .plan__kicker { margin-top: 20px; font-size: 0.8rem; color: rgba(14, 26, 54, 0.6); }
+    .plan__price { display: flex; align-items: flex-start; gap: 6px; font-family: var(--fr); font-size: clamp(2.1rem, 2.6vw, 2.6rem); line-height: 1; font-variant-numeric: lining-nums; }
     .plan__price small { margin-top: 0.35em; font-family: var(--pt); font-size: 0.9rem; font-weight: 600; color: var(--bleu); }
     .plan__unit { margin-top: 6px; font-size: 0.86rem; color: rgba(14, 26, 54, 0.65); }
     .plan__note { align-self: flex-start; margin-top: 12px; padding: 5px 12px; border-radius: 0; background: #e9f0fd; color: var(--bleu); font-size: 0.82rem; font-weight: 600; }
 
-    .plans ul { margin: 24px 0 26px; padding: 0; list-style: none; font-size: 0.92rem; line-height: 1.4; }
-    .plans ul li { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 11px 0; border-top: 1px dashed rgba(14, 26, 54, 0.18); }
+    .plans ul { margin: 18px 0 20px; padding: 0; list-style: none; font-size: 0.88rem; line-height: 1.4; }
+    .plans ul li { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; padding: 9px 0; border-top: 1px dashed rgba(14, 26, 54, 0.18); }
     .plans ul b { font-weight: 600; white-space: nowrap; }
     .plans ul .check { justify-content: flex-start; }
     .plans ul .check::before { content: ""; flex: none; width: 10px; height: 6px; margin-right: 2px; border-left: 2px solid var(--bleu); border-bottom: 2px solid var(--bleu); transform: translateY(-3px) rotate(-45deg); }
 
     .plan__btn {
       margin-top: auto; display: flex; align-items: center; justify-content: center; gap: 10px;
-      min-height: 50px; border-radius: 0; border: 1.5px solid var(--bleu);
+      min-height: 44px; border-radius: 0; border: 1.5px solid var(--bleu);
       color: var(--bleu); font-weight: 600; font-size: 0.95rem; text-decoration: none;
       transition: background-color 0.3s, color 0.3s, gap 0.4s var(--ease);
     }
@@ -430,6 +438,8 @@
       .stats li > span { font-size: 0.74rem; }
       .stats .sample { margin: 4px 0 0; }
       .reviews li { flex-basis: 100%; max-width: none; }
+      .place { grid-template-columns: 1fr; text-align: center; }
+      .place__map { aspect-ratio: 4 / 3; }
       .contact__grid { grid-template-columns: 1fr; }
       .footer__row { flex-direction: column; align-items: flex-start; }
       .motifs { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 36px; }
@@ -538,6 +548,21 @@
 
         <!-- Avaliações: preenchidas pelo script a partir de AVALIACOES (fim do arquivo) -->
         <ul class="reviews" id="reviews"></ul>
+
+        <div class="place reveal">
+          <div class="place__text">
+            <p class="label">Onde estamos</p>
+            <p class="place__big">Ao lado da <em>UFU</em></p>
+            <p class="place__addr">Rua Francisco Vicente Ferreira, 180<br />Uberlândia — MG</p>
+            <a class="arrow-link" href="https://www.google.com/maps/dir/?api=1&destination=Rua+Francisco+Vicente+Ferreira+180,+Uberl%C3%A2ndia+-+MG" target="_blank" rel="noopener noreferrer">Como chegar <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow" /></svg></a>
+          </div>
+          <div class="place__map">
+            <iframe
+              src="https://www.google.com/maps?q=Rua+Francisco+Vicente+Ferreira+180,+Uberl%C3%A2ndia+-+MG&z=16&output=embed"
+              title="Mapa: Flexion, Rua Francisco Vicente Ferreira 180, Uberlândia"
+              loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+          </div>
+        </div>
       </div>
       <a class="proof__next" href="#idiomas" aria-label="Continuar para Idiomas">
         <svg width="14" height="22" viewBox="0 0 14 22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 1v19M1 14l6 6 6-6" /></svg>
@@ -754,7 +779,7 @@
     /* ═══ CONFIGURAÇÃO ═══
        Número do WhatsApp da escola, só dígitos, com DDI e DDD. Ex.: "5511999999999".
        Vazio: o botão abre o WhatsApp e o visitante escolhe o contato. */
-    const WHATSAPP = "";
+    const WHATSAPP = "553432175950";
     const MENSAGEM = "Olá, Flexion! Gostaria de saber mais sobre os cursos de idiomas.";
 
     /* ═══ NÚMEROS ═══
@@ -810,9 +835,9 @@
        Enquanto um campo estiver vazio, a linha aparece como "a preencher" —
        apague a linha inteira se a escola não usar aquele meio. */
     const CONTATOS = [
-      { tipo: "Instagram", valor: "" },   // ex.: "@flexion"
-      { tipo: "E-mail",    valor: "" },   // ex.: "contato@flexion.com.br"
-      { tipo: "Telefone",  valor: "" },   // ex.: "(11) 99999-9999"
+      { tipo: "Instagram", valor: "@flexionfrances" },
+      { tipo: "Telefone",  valor: "(34) 3217-5950" },
+      // { tipo: "E-mail", valor: "contato@exemplo.com" },   // tire as barras e preencha quando houver
     ];
 
     const ICONES = { WhatsApp: "i-wa", "E-mail": "i-mail", Telefone: "i-phone", Instagram: "i-insta", "Endereço": "i-pin" };
