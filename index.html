@@ -120,7 +120,7 @@
 
     .hero__group { position: absolute; z-index: 2; bottom: 0; right: max(var(--gutter), 6vw); height: min(82%, 720px); }
     .hero__portrait { height: 100%; width: auto; overflow: visible; }
-    .hero__art .ink { transform-origin: 330px 380px; animation: ink 1.3s 0.35s var(--ease) both; }
+    .hero__art .ink { transform-origin: 330px 380px; animation: ink 1.3s 0.35s var(--ease) both; filter: drop-shadow(0 18px 30px rgba(0, 0, 0, 0.35)); }
     .hero__art .tower { animation: fade 1s 0.7s both; }
     .hero__art .draw { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw 1.6s 0.8s var(--ease) forwards; }
     @keyframes ink { from { opacity: 0; transform: scale(0.6) rotate(-8deg); } }
@@ -514,42 +514,63 @@
           <source src="video/paris.mp4" type="video/mp4" />
         </video>
 
-        <!-- Ilustração: Torre Eiffel a traço sobre uma mancha de tinta creme (vetor, sem imagem) -->
+        <!-- Ilustração: Torre Eiffel em estilo de gravura antiga (sépia), sobre papel envelhecido. Vetor. -->
         <div class="hero__group" aria-hidden="true">
-          <svg class="hero__portrait hero__art" viewBox="0 0 640 620" fill="none">
+          <svg class="hero__portrait hero__art" viewBox="0 0 640 640" fill="none">
             <defs>
-              <pattern id="lat" width="13" height="13" patternUnits="userSpaceOnUse">
-                <path d="M0 13L13 0M-2 2L2 -2M11 15L15 11" stroke="#0b1838" stroke-width="1.1" opacity=".55" />
+              <radialGradient id="paper" cx="45%" cy="45%" r="65%">
+                <stop offset="0" stop-color="#f4ecda" /><stop offset=".75" stop-color="#e9dcc2" /><stop offset="1" stop-color="#d9c8a6" />
+              </radialGradient>
+              <pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(35)">
+                <path d="M0 0V6" stroke="#5a4630" stroke-width=".7" opacity=".45" />
               </pattern>
-              <clipPath id="sil" clip-rule="evenodd"><path d="M30 590C75 495 135 395 172 250C186 195 195 125 199 45L205 14L215 14C221 45 234 195 248 250C285 395 345 495 390 590Z M108 590C132 536 168 494 210 476C252 494 288 536 312 590Z" transform="translate(190 0)" /></clipPath>
+              <filter id="grain" x="0" y="0" width="100%" height="100%">
+                <feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="4" />
+                <feColorMatrix values="0 0 0 0 .35 0 0 0 0 .28 0 0 0 0 .18 0 0 0 .18 0" />
+                <feComposite in2="SourceGraphic" operator="in" />
+              </filter>
             </defs>
 
-            <!-- tinta espalhada -->
-            <g class="ink" fill="#f2ebdc">
-              <path d="M470 118c62-14 128 24 150 92 20 60-4 118-34 168-28 46-26 108-84 138-56 29-128 22-190 4-56-16-120-30-168-66C96 416 62 356 76 298c14-58 76-68 118-104 40-34 56-96 110-108 54-12 106 20 166 32z" />
-              <circle cx="58" cy="236" r="16" /><circle cx="26" cy="300" r="8" /><circle cx="118" cy="164" r="7" />
-              <circle cx="40" cy="470" r="11" /><circle cx="96" cy="540" r="6" /><circle cx="206" cy="112" r="5" />
-              <circle cx="14" cy="392" r="4" /><circle cx="150" cy="590" r="9" />
+            <!-- papel antigo, com bordas irregulares e grão -->
+            <g class="ink">
+              <path class="paper" d="M462 96c70-8 128 40 150 106 22 66 0 128-32 176-30 44-32 104-88 136-58 32-134 26-198 10-58-14-126-28-172-64C68 420 44 350 60 292c16-60 78-70 122-108 44-38 60-104 118-118 58-14 100 40 162 30z" fill="url(#paper)" />
+              <path d="M462 96c70-8 128 40 150 106 22 66 0 128-32 176-30 44-32 104-88 136-58 32-134 26-198 10-58-14-126-28-172-64C68 420 44 350 60 292c16-60 78-70 122-108 44-38 60-104 118-118 58-14 100 40 162 30z" filter="url(#grain)" fill="#000" />
+              <path d="M462 96c70-8 128 40 150 106 22 66 0 128-32 176-30 44-32 104-88 136-58 32-134 26-198 10-58-14-126-28-172-64C68 420 44 350 60 292c16-60 78-70 122-108 44-38 60-104 118-118 58-14 100 40 162 30z" stroke="#b9a37c" stroke-width="1.2" opacity=".7" />
+              <!-- manchas de idade -->
+              <circle cx="150" cy="200" r="26" fill="#c9b48e" opacity=".22" /><circle cx="560" cy="330" r="34" fill="#c9b48e" opacity=".18" /><circle cx="250" cy="540" r="20" fill="#c9b48e" opacity=".2" />
+              <!-- selo -->
+              <g class="stamp" transform="translate(150 430) rotate(-14)" stroke="#8c2f2f" opacity=".75">
+                <circle r="34" stroke-width="1.6" /><circle r="27" stroke-width=".8" />
+                <text y="-6" text-anchor="middle" fill="#8c2f2f" stroke="none" font-family="Georgia, serif" font-size="9" letter-spacing="1.5">PARIS</text>
+                <text y="10" text-anchor="middle" fill="#8c2f2f" stroke="none" font-family="Georgia, serif" font-size="12" font-weight="bold">1889</text>
+              </g>
             </g>
 
-            <!-- torre -->
-            <g class="tower" transform="translate(190 0)" stroke="#0b1838" stroke-linecap="round" stroke-linejoin="round">
-              <g clip-path="url(#sil)" transform="translate(-190 0)">
-                <rect x="190" y="0" width="420" height="620" fill="url(#lat)" />
-                <path d="M0 90H420M0 130H420M0 170H420M0 210H420M0 290H420M0 330H420M0 370H420M0 440H420M0 480H420M0 520H420M0 560H420" transform="translate(190 0)" stroke-width="1.3" opacity=".7" />
-                <path d="M210 14V590" transform="translate(190 0)" stroke-width="1.2" opacity=".5" />
+            <!-- torre em sépia -->
+            <g class="tower" transform="translate(190 0)" stroke="#3b2c1c" stroke-linecap="round" stroke-linejoin="round">
+              <!-- preenchimento hachurado -->
+              <path d="M198.0 40 L197.8 50 L197.3 60 L196.7 70 L195.9 80 L195.0 90 L194.0 100 L192.8 110 L191.6 120 L190.3 130 L188.8 140 L187.3 150 L185.7 160 L184.1 170 L182.3 180 L180.5 190 L178.6 200 L176.6 210 L174.6 220 L172.4 230 L170.3 240 L168.0 250 L166.7 260 L164.7 270 L162.2 280 L159.5 290 L156.5 300 L153.3 310 L149.9 320 L146.3 330 L142.6 340 L138.7 350 L134.7 360 L130.5 370 L126.2 380 L121.8 390 L117.3 400 L112.7 410 L108.0 420 L104.5 430 L100.3 440 L95.8 450 L91.0 460 L86.0 470 L80.9 480 L75.6 490 L70.2 500 L64.7 510 L59.2 520 L53.5 530 L47.8 540 L42.0 550 L36.1 560 L30.2 570 L24.2 580 L18.1 590 L12.0 600 L408.0 600 L401.9 590 L395.8 580 L389.8 570 L383.9 560 L378.0 550 L372.2 540 L366.5 530 L360.8 520 L355.3 510 L349.8 500 L344.4 490 L339.1 480 L334.0 470 L329.0 460 L324.2 450 L319.7 440 L315.5 430 L312.0 420 L307.3 410 L302.7 400 L298.2 390 L293.8 380 L289.5 370 L285.3 360 L281.3 350 L277.4 340 L273.7 330 L270.1 320 L266.7 310 L263.5 300 L260.5 290 L257.8 280 L255.3 270 L253.3 260 L252.0 250 L249.7 240 L247.6 230 L245.4 220 L243.4 210 L241.4 200 L239.5 190 L237.7 180 L235.9 170 L234.3 160 L232.7 150 L231.2 140 L229.7 130 L228.4 120 L227.2 110 L226.0 100 L225.0 90 L224.1 80 L223.3 70 L222.7 60 L222.2 50 L222.0 40Z" fill="url(#hatch)" stroke="none" />
+              <!-- treliça -->
+              <path d="M197.3 60L223.9 78M222.7 60L196.1 78M197.3 60L222.7 60M196.1 78L225.6 96M223.9 78L194.4 96M196.1 78L223.9 78M194.4 96L227.7 114M225.6 96L192.3 114M194.4 96L225.6 96M192.3 114L230.0 132M227.7 114L190.0 132M192.3 114L227.7 114M190.0 132L232.7 150M230.0 132L187.3 150M190.0 132L230.0 132M187.3 150L235.6 168M232.7 150L184.4 168M187.3 150L232.7 150M184.4 168L238.8 186M235.6 168L181.2 186M184.4 168L235.6 168M181.2 186L242.2 204M238.8 186L177.8 204M181.2 186L238.8 186M177.8 204L245.9 222M242.2 204L174.1 222M177.8 204L242.2 204M174.1 222L249.7 240M245.9 222L170.3 240M174.1 222L245.9 222M170.3 240L253.0 258M249.7 240L167.0 258M170.3 240L249.7 240M167.0 258L258.3 282M253.0 258L161.7 282M167.0 258L253.0 258M161.7 282L265.4 306M258.3 282L154.6 306M161.7 282L258.3 282M154.6 306L273.7 330M265.4 306L146.3 330M154.6 306L265.4 306M146.3 330L282.9 354M273.7 330L137.1 354M146.3 330L273.7 330M137.1 354L292.9 378M282.9 354L127.1 378M137.1 354L282.9 354M127.1 378L303.6 402M292.9 378L116.4 402M127.1 378L292.9 378M116.4 402L313.9 426M303.6 402L106.1 426M116.4 402L303.6 402M152.1 426L92.9 456M106.1 426L144.9 456M267.9 426L327.1 456M313.9 426L275.1 456M138.9 456L77.7 486M92.9 456L129.7 486M281.1 456L342.3 486M327.1 456L290.3 486M123.7 486L61.4 516M77.7 486L113.4 516M296.3 486L358.6 516M342.3 486L306.6 516M107.4 516L44.3 546M61.4 516L96.3 546M312.6 516L375.7 546M358.6 516L323.7 546M90.3 546L26.6 576M44.3 546L78.6 576M329.7 546L393.4 576M375.7 546L341.4 576M72.6 576L12.0 606M26.6 576L64.0 606M347.4 576L408.0 606M393.4 576L356.0 606" stroke-width=".8" opacity=".85" />
+              <path d="M154.0 420 L150.9 430 L147.0 440 L142.8 450 L138.3 460 L133.7 470 L128.9 480 L123.9 490 L118.9 500 L113.7 510 L108.5 520 L103.2 530 L97.8 540 L92.3 550 L86.8 560 L81.2 570 L75.5 580 L69.8 590 L64.0 600M266.0 420 L269.1 430 L273.0 440 L277.2 450 L281.7 460 L286.3 470 L291.1 480 L296.1 490 L301.1 500 L306.3 510 L311.5 520 L316.8 530 L322.2 540 L327.7 550 L333.2 560 L338.8 570 L344.5 580 L350.2 590 L356.0 600" stroke-width="1.4" />
+              <!-- cordas externas -->
+              <path class="draw" pathLength="1" d="M198.0 40 L197.8 50 L197.3 60 L196.7 70 L195.9 80 L195.0 90 L194.0 100 L192.8 110 L191.6 120 L190.3 130 L188.8 140 L187.3 150 L185.7 160 L184.1 170 L182.3 180 L180.5 190 L178.6 200 L176.6 210 L174.6 220 L172.4 230 L170.3 240 L168.0 250 L166.7 260 L164.7 270 L162.2 280 L159.5 290 L156.5 300 L153.3 310 L149.9 320 L146.3 330 L142.6 340 L138.7 350 L134.7 360 L130.5 370 L126.2 380 L121.8 390 L117.3 400 L112.7 410 L108.0 420 L104.5 430 L100.3 440 L95.8 450 L91.0 460 L86.0 470 L80.9 480 L75.6 490 L70.2 500 L64.7 510 L59.2 520 L53.5 530 L47.8 540 L42.0 550 L36.1 560 L30.2 570 L24.2 580 L18.1 590 L12.0 600" stroke-width="2.4" />
+              <path class="draw" pathLength="1" d="M222.0 40 L222.2 50 L222.7 60 L223.3 70 L224.1 80 L225.0 90 L226.0 100 L227.2 110 L228.4 120 L229.7 130 L231.2 140 L232.7 150 L234.3 160 L235.9 170 L237.7 180 L239.5 190 L241.4 200 L243.4 210 L245.4 220 L247.6 230 L249.7 240 L252.0 250 L253.3 260 L255.3 270 L257.8 280 L260.5 290 L263.5 300 L266.7 310 L270.1 320 L273.7 330 L277.4 340 L281.3 350 L285.3 360 L289.5 370 L293.8 380 L298.2 390 L302.7 400 L307.3 410 L312.0 420 L315.5 430 L319.7 440 L324.2 450 L329.0 460 L334.0 470 L339.1 480 L344.4 490 L349.8 500 L355.3 510 L360.8 520 L366.5 530 L372.2 540 L378.0 550 L383.9 560 L389.8 570 L395.8 580 L401.9 590 L408.0 600" stroke-width="2.4" />
+              <!-- arcos -->
+              <path class="draw" pathLength="1" d="M108 600C128 548 166 512 210 500C254 512 292 548 312 600" stroke-width="2.2" />
+              <path d="M122 600C140 560 172 528 210 518C248 528 280 560 298 600" stroke-width="1" opacity=".7" />
+              <!-- patamares com balaustrada -->
+              <g fill="#3b2c1c" stroke="none">
+                <rect x="96" y="414" width="228" height="9" /><rect x="90" y="425" width="240" height="2.5" />
+                <rect x="160" y="246" width="100" height="7" /><rect x="156" y="255" width="108" height="2" />
+                <rect x="196" y="36" width="28" height="5" /><rect x="193" y="43" width="34" height="1.5" />
+                <rect x="20" y="598" width="380" height="3" />
               </g>
-              <g fill="#0b1838" stroke="none">
-                <rect x="118" y="396" width="184" height="13" rx="2" /><rect x="110" y="411" width="200" height="4" />
-                <rect x="158" y="246" width="104" height="10" rx="2" /><rect x="152" y="258" width="116" height="3" />
-                <rect x="190" y="40" width="40" height="8" rx="2" /><rect x="186" y="50" width="48" height="3" />
-                <rect x="24" y="588" width="70" height="5" rx="2" /><rect x="326" y="588" width="70" height="5" rx="2" />
-              </g>
-              <path class="draw" pathLength="1" d="M30 590C75 495 135 395 172 250C186 195 195 125 199 45L205 14" stroke-width="3.2" />
-              <path class="draw" pathLength="1" d="M390 590C345 495 285 395 248 250C234 195 225 125 221 45L215 14" stroke-width="3.2" />
-              <path class="draw" pathLength="1" d="M108 590C132 536 168 494 210 476C252 494 288 536 312 590" stroke-width="2.8" />
-              <path class="draw" pathLength="1" d="M210 14V-4" stroke-width="2.4" />
-              <path class="draw" pathLength="1" d="M108 590C130 566 158 548 210 540C262 548 290 566 312 590" stroke-width="1.6" opacity=".7" />
+              <path d="M100 404V414M108 404V414M116 404V414M124 404V414M132 404V414M140 404V414M148 404V414M156 404V414M164 404V414M172 404V414M180 404V414M188 404V414M196 404V414M204 404V414M212 404V414M220 404V414M228 404V414M236 404V414M244 404V414M252 404V414M260 404V414M268 404V414M276 404V414M284 404V414M292 404V414M300 404V414M308 404V414M316 404V414" stroke-width=".8" />
+              <path d="M162 238V246M169 238V246M176 238V246M183 238V246M190 238V246M197 238V246M204 238V246M211 238V246M218 238V246M225 238V246M232 238V246M239 238V246M246 238V246M253 238V246" stroke-width=".7" />
+              <path class="draw" pathLength="1" d="M210 36V6M204 12H216" stroke-width="1.8" />
+              <!-- reflexo de chão / sombra de gravura -->
+              <path d="M40 606C120 612 300 612 380 606" stroke-width=".8" opacity=".5" />
             </g>
           </svg>
         </div>
