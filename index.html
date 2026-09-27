@@ -118,11 +118,19 @@
     .header nav a:hover { background: linear-gradient(var(--bleu-2), var(--bleu)); color: var(--white); box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5); }
     .header__social { display: flex; justify-content: flex-end; gap: 10px; }
     .header__social a { display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; color: var(--ink); background: linear-gradient(#fff, #e9eef8); box-shadow: inset 0 1px 0 #fff, 0 3px 8px -4px rgba(14, 26, 54, 0.5); transition: color 0.3s, transform 0.3s; }
-    .header__social a:hover { color: var(--bleu); transform: translateY(-2px); }
+        .header__social a:hover { color: var(--bleu); transform: translateY(-2px); }
+    /* No topo da página o cabeçalho é transparente sobre o vídeo; ao rolar ganha o fundo de papel */
+    .header { transition: background-color 0.4s, box-shadow 0.4s; }
+    .header:not(.is-solid) { background: transparent; box-shadow: none; color: #fff; }
+    .header:not(.is-solid)::before { opacity: 0; }
+    .header:not(.is-solid) nav { background: transparent; box-shadow: none; }
+    .header:not(.is-solid) nav a { color: #fff; text-shadow: 0 1px 8px rgba(0, 0, 0, 0.7); }
+    .header:not(.is-solid) .header__social a { color: #fff; background: rgba(255, 255, 255, 0.12); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35); }
+    .header::before { transition: opacity 0.4s; }
 
     /* ───────── 1 · Introdução: vídeo + leque de capas ───────── */
-    .hero { position: relative; padding-top: 84px; }
-    .hero__frame { position: relative; overflow: hidden; display: grid; align-items: center; min-height: calc(100svh - 84px); padding-block: clamp(40px, 6vh, 72px) clamp(64px, 9vh, 110px); background: #2a1c10; color: #fbf3e4; }
+    .hero { position: relative; }
+    .hero__frame { position: relative; overflow: hidden; display: grid; align-items: center; min-height: 100svh; padding-block: calc(84px + clamp(40px, 6vh, 72px)) clamp(64px, 9vh, 110px); background: #2a1c10; color: #fbf3e4; }
     .hero__media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: sepia(0.8) brightness(0.9); }
     .hero__frame::before { content: ""; position: absolute; inset: 0; z-index: 1; background: #0e2f80; mix-blend-mode: screen; }
     .hero__frame::after { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(100deg, rgba(38, 26, 16, 0.86) 0%, rgba(38, 26, 16, 0.55) 50%, rgba(70, 40, 30, 0.5) 100%), radial-gradient(120% 90% at 50% 50%, transparent 55%, rgba(20, 12, 6, 0.7) 100%); }
@@ -397,8 +405,7 @@
       .header nav { justify-content: flex-end; gap: 2px; padding: 3px; }
       .header nav a { padding: 6px 10px; font-size: 0.68rem; }
       .header nav a[href="#inicio"], .header__social { display: none; }
-      .hero { padding-top: 72px; }
-      .hero__frame { min-height: calc(100svh - 72px); align-items: start; padding-top: clamp(28px, 5svh, 48px); }
+      .hero__frame { min-height: 100svh; align-items: start; padding-top: calc(72px + clamp(28px, 5svh, 48px)); }
       .hero__content { justify-items: center; text-align: center; }
       .hero__text { justify-items: center; gap: 18px; }
       .hero__stickers { justify-content: center; }
@@ -471,7 +478,6 @@
           <source src="video/paris.mp4" type="video/mp4" />
         </video>
         <div class="hero__shine"></div>
-        <div class="hero__band" aria-hidden="true"></div>
 
         <a class="hero__scroll" href="#experiencia">
           Role para baixo
@@ -898,7 +904,7 @@
     const $$ = (s) => [...document.querySelectorAll(s)];
 
     const bar = $(".progress");
-    const heroScroll = $(".hero__scroll");
+    const heroScroll = $(".hero__scroll"), header = $(".header");
     const pin = $(".pin");
     const photos = $$(".pin__photo"), names = $$(".pin__list a"), ctas = $$(".pin__cta a"), greetings = $$(".pin__greetings span");
     const N = photos.length;
@@ -916,6 +922,7 @@
 
       // Introdução: fica inteira; só o aviso de rolagem some quando a página desce
       heroScroll.style.visibility = y > 60 ? "hidden" : "visible";
+      header.classList.toggle("is-solid", y > 40);
 
       // Idiomas: a rolagem conduz a cortina; cada troca consome --step de rolagem
       const span = pin.offsetHeight - vh;                       // = 3 * step
