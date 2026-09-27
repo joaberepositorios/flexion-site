@@ -333,22 +333,30 @@
     .motifs.in li { opacity: 1; transform: none; }
     .motifs__path { position: absolute; inset: 0 0 auto 0; height: 220px; display: block; opacity: 1; transform: none; pointer-events: none; }
     .motifs__path svg { width: 100%; height: 100%; }
-    .motifs__path path { fill: none; stroke: var(--rouge); stroke-width: 2; stroke-linecap: round; stroke-dasharray: 0.012 0.008; stroke-dashoffset: 1; opacity: 0.55; transition: stroke-dashoffset 2.4s var(--ease) 0.2s; }
+    .motifs__path path { fill: none; stroke: #a8242a; stroke-width: 1.6; stroke-linecap: round; stroke-dasharray: 0.008 0.007; stroke-dashoffset: 1; opacity: 0.6; transition: stroke-dashoffset 2.4s var(--ease) 0.2s; }
     .motifs.in .motifs__path path { stroke-dashoffset: 0; }
     .node { position: relative; width: 200px; height: 200px; display: grid; place-items: center; color: var(--bleu); transform: translateY(var(--plx, 0px)); }
-    .node__ring { position: absolute; inset: 0; width: 100%; height: 100%; fill: none; stroke: var(--bleu); }
-    .node__ring .r1 { stroke-width: 1.2; stroke-dasharray: 3 6; opacity: 0.55; transform-origin: 50% 50%; animation: gira 60s linear infinite; }
-    .node__ring .r2 { stroke-width: 2; fill: rgba(255, 255, 255, 0.55); }
-    .node__ring .ticks { stroke-width: 2; opacity: 0.8; }
+    .node__ring { position: absolute; inset: 0; width: 100%; height: 100%; fill: none; stroke: var(--tinta); }
+    .node { --tinta: #1f3d7a; --tinta-2: #a8242a; color: var(--tinta); }
+    .node__ring .r0 { stroke-width: 0.8; opacity: 0.45; }
+    .node__ring .r1 { stroke-width: 1; stroke-dasharray: 2 5; opacity: 0.6; transform-origin: 50% 50%; animation: gira 70s linear infinite; }
+    .node__ring .r2 { stroke-width: 1.8; fill: #f6edd8; }
+    .node__ring .r3 { stroke-width: 0.7; opacity: 0.7; }
+    .node__ring .ticks { stroke-width: 1.6; opacity: 0.85; }
+    .node__ring .pts { fill: var(--tinta); stroke: none; font-family: var(--pt); font-size: 12px; font-weight: 700; opacity: 0.8; }
     @keyframes gira { to { transform: rotate(360deg); } }
-    .node__icon { position: relative; width: 96px; height: 96px; transition: transform 0.5s var(--ease); }
-    .node__icon .ink { fill: var(--rouge); }
+    /* A tinta falha de leve, como impressão antiga */
+    .node__ring, .node__icon { -webkit-mask-image: radial-gradient(circle at 40% 35%, #000 55%, rgba(0, 0, 0, 0.7) 100%); mask-image: radial-gradient(circle at 40% 35%, #000 55%, rgba(0, 0, 0, 0.7) 100%); }
+    .node__icon { position: relative; width: 92px; height: 92px; transition: transform 0.5s var(--ease); }
+    .node__icon .ink { fill: var(--tinta-2); }
     .node:hover .node__icon { transform: translateY(-4px) scale(1.06); }
-    .node:hover .node__ring .r1 { animation-duration: 12s; }
-    .node__n { position: absolute; right: 14px; top: 14px; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--rouge); color: var(--white); font-family: var(--ui); font-size: 0.72rem; font-weight: 800; letter-spacing: 0.06em; box-shadow: 0 0 0 4px var(--bg), 0 6px 14px -6px rgba(0, 0, 0, 0.5); }
-    .motifs strong { margin-top: 14px; max-width: 22ch; font-size: 1.2rem; font-weight: 700; line-height: 1.3; color: var(--nuit); }
-    .motifs span { font-size: 1rem; font-style: italic; color: var(--bleu); }
-    .motifs li > span[lang="fr"]::before, .motifs li > span[lang="fr"]::after { content: "—"; margin: 0 8px; color: var(--rouge); opacity: 0.6; }
+    .node:hover .node__ring .r1 { animation-duration: 14s; }
+    /* Número em algarismo romano, num selo de papel com borda dupla vermelha */
+    .node__n { position: absolute; right: 12px; top: 12px; display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: #f6edd8; color: var(--tinta-2); border: 2px solid var(--tinta-2); box-shadow: inset 0 0 0 2px #f6edd8, inset 0 0 0 3px var(--tinta-2), 0 4px 10px -4px rgba(0, 0, 0, 0.45); font-family: var(--pt); font-size: 0.95rem; font-weight: 700; transform: rotate(8deg); }
+    .motifs strong { margin-top: 14px; max-width: 22ch; font-size: 1.2rem; font-weight: 700; line-height: 1.3; color: #1f2a44; }
+    .motifs span { font-family: "Parisienne", cursive; font-size: 1.35rem; color: #1f3d7a; }
+    .motifs li > span[lang="fr"], .motifs li > span[lang="fr"] { font-family: "Parisienne", cursive; font-style: normal; }
+    .motifs li > span[lang="fr"]::before, .motifs li > span[lang="fr"]::after { content: "❦"; margin: 0 10px; font-size: 0.8rem; color: #a8242a; opacity: 0.7; vertical-align: 0.2em; }
     /* ───────── 5 · Planos: cada plano como uma "edição" ───────── */
     .pricing { position: relative; padding-block: clamp(52px, 7vh, 84px); color: var(--white); background: linear-gradient(180deg, #14306f, var(--nuit) 70%); overflow: hidden; clip-path: inset(0); }
     .pricing::before { content: ""; position: fixed; inset: 0; z-index: 0; background: url("images/louvre.webp") center / cover; opacity: 0.22; filter: sepia(1) contrast(0.9); pointer-events: none; }
@@ -659,7 +667,7 @@
           <li class="motifs__path" aria-hidden="true"><svg viewBox="0 0 1000 220" preserveAspectRatio="none"><path pathLength="1" d="M60 110 C 250 20, 420 200, 500 110 S 780 20, 940 110" /></svg></li>
           <li style="--i:0">
             <div class="node" data-plx="0.05">
-              <svg class="node__ring" viewBox="0 0 200 200" aria-hidden="true"><circle class="r1" cx="100" cy="100" r="94" /><circle class="r2" cx="100" cy="100" r="78" /><path class="ticks" d="M100 2v10M100 188v10M2 100h10M188 100h10M30.7 30.7l7 7M162.3 162.3l7 7M169.3 30.7l-7 7M37.7 162.3l-7 7" /></svg>
+              <svg class="node__ring" viewBox="0 0 200 200" aria-hidden="true"><circle class="r0" cx="100" cy="100" r="98" /><circle class="r1" cx="100" cy="100" r="92" /><circle class="r2" cx="100" cy="100" r="76" /><circle class="r3" cx="100" cy="100" r="71" /><path class="ticks" d="M100 4v8M100 188v8M4 100h8M188 100h8M32 32l5.5 5.5M162.5 162.5l5.5 5.5M168 32l-5.5 5.5M37.5 162.5L32 168" /><g class="pts"><text x="100" y="24" text-anchor="middle">N</text><text x="100" y="185" text-anchor="middle">S</text><text x="20" y="104" text-anchor="middle">O</text><text x="180" y="104" text-anchor="middle">E</text></g></svg>
               <svg class="node__icon" viewBox="0 0 64 64" aria-hidden="true">
                 <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                   <circle cx="28" cy="36" r="20" /><ellipse cx="28" cy="36" rx="8.5" ry="20" /><path d="M8.5 36h39M11 26h34M11 46h34" />
@@ -667,14 +675,14 @@
                 <path class="ink" d="M62 14.5v-2l-8.5-5V1.5a1.5 1.5 0 0 0-3 0V7.5L42 12.5v2l8.5-2.5V18L48 19.5V21l4-1 4 1v-1.5L53.5 18v-6l8.5 2.5z" />
                 <path fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2.5 3" d="M20 8c8-3 16-3 26 4" opacity="0.7" />
               </svg>
-              <b class="node__n">01</b>
+              <b class="node__n">I</b>
             </div>
             <strong>Preparação para conversa em viagens internacionais</strong>
             <span lang="fr">le voyage</span>
           </li>
           <li style="--i:1">
             <div class="node" data-plx="0.08">
-              <svg class="node__ring" viewBox="0 0 200 200" aria-hidden="true"><circle class="r1" cx="100" cy="100" r="94" /><circle class="r2" cx="100" cy="100" r="78" /><path class="ticks" d="M100 2v10M100 188v10M2 100h10M188 100h10M30.7 30.7l7 7M162.3 162.3l7 7M169.3 30.7l-7 7M37.7 162.3l-7 7" /></svg>
+              <svg class="node__ring" viewBox="0 0 200 200" aria-hidden="true"><circle class="r0" cx="100" cy="100" r="98" /><circle class="r1" cx="100" cy="100" r="92" /><circle class="r2" cx="100" cy="100" r="76" /><circle class="r3" cx="100" cy="100" r="71" /><path class="ticks" d="M100 4v8M100 188v8M4 100h8M188 100h8M32 32l5.5 5.5M162.5 162.5l5.5 5.5M168 32l-5.5 5.5M37.5 162.5L32 168" /><g class="pts"><text x="100" y="24" text-anchor="middle">N</text><text x="100" y="185" text-anchor="middle">S</text><text x="20" y="104" text-anchor="middle">O</text><text x="180" y="104" text-anchor="middle">E</text></g></svg>
               <svg class="node__icon" viewBox="0 0 64 64" aria-hidden="true">
                 <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M6 14c8-4 17-4 26 2 9-6 18-6 26-2v34c-8-4-17-4-26 2-9-6-18-6-26-2z" /><path d="M32 16v34" />
@@ -682,21 +690,21 @@
                 </g>
                 <path class="ink" d="M42 58l16-16 4.5 4.5-16 16-6.5 2z" /><path fill="none" stroke="#fff" stroke-width="1" d="M55 45l4.5 4.5" opacity="0.7" />
               </svg>
-              <b class="node__n">02</b>
+              <b class="node__n">II</b>
             </div>
             <strong>Material didático completo</strong>
             <span lang="fr">le matériel</span>
           </li>
           <li style="--i:2">
             <div class="node" data-plx="0.06">
-              <svg class="node__ring" viewBox="0 0 200 200" aria-hidden="true"><circle class="r1" cx="100" cy="100" r="94" /><circle class="r2" cx="100" cy="100" r="78" /><path class="ticks" d="M100 2v10M100 188v10M2 100h10M188 100h10M30.7 30.7l7 7M162.3 162.3l7 7M169.3 30.7l-7 7M37.7 162.3l-7 7" /></svg>
+              <svg class="node__ring" viewBox="0 0 200 200" aria-hidden="true"><circle class="r0" cx="100" cy="100" r="98" /><circle class="r1" cx="100" cy="100" r="92" /><circle class="r2" cx="100" cy="100" r="76" /><circle class="r3" cx="100" cy="100" r="71" /><path class="ticks" d="M100 4v8M100 188v8M4 100h8M188 100h8M32 32l5.5 5.5M162.5 162.5l5.5 5.5M168 32l-5.5 5.5M37.5 162.5L32 168" /><g class="pts"><text x="100" y="24" text-anchor="middle">N</text><text x="100" y="185" text-anchor="middle">S</text><text x="20" y="104" text-anchor="middle">O</text><text x="180" y="104" text-anchor="middle">E</text></g></svg>
               <svg class="node__icon" viewBox="0 0 64 64" aria-hidden="true">
                 <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                   <rect x="6" y="10" width="52" height="36" rx="3" /><path d="M14 20h36M14 27h36M14 34h18" opacity="0.75" /><path d="M10 14h44M10 42h30" opacity="0.35" />
                 </g>
                 <path class="ink" d="M40 47l-3.5 14 8.5-4.5 8.5 4.5-3.5-14z" /><circle class="ink" cx="45" cy="40" r="8" /><circle cx="45" cy="40" r="4.5" fill="none" stroke="#fff" stroke-width="1.2" opacity="0.8" />
               </svg>
-              <b class="node__n">03</b>
+              <b class="node__n">III</b>
             </div>
             <strong>Exames TOEFL, DELF e Cambridge</strong>
             <span lang="fr">les examens</span>
