@@ -108,11 +108,9 @@
     /* Painel branco arredondado com reflexo no topo */
     .panel { position: relative; background: var(--white); border-radius: var(--r); box-shadow: 0 1px 0 rgba(255, 255, 255, 0.9) inset, 0 20px 40px -28px rgba(14, 26, 54, 0.35), 0 0 0 1px rgba(14, 26, 54, 0.06); }
 
-    .progress { position: fixed; inset: 0 0 auto 0; z-index: 60; height: 3px; background: var(--rouge); transform: scaleX(0); transform-origin: left; }
 
     /* ───────── Cabeçalho ───────── */
     .header { position: fixed; inset: 0 0 auto 0; z-index: 50; background: rgba(250, 246, 238, 0.97); color: var(--ink); box-shadow: 0 1px 0 var(--line), 0 10px 30px -22px rgba(14, 26, 54, 0.5); }
-    .header::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 4px; background: var(--tricolor); }
     .header .container { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; height: 76px; }
     .brand { display: flex; align-items: center; text-decoration: none; }
     .brand img { height: 58px; width: auto; border-radius: 8px; box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3); }
@@ -125,16 +123,15 @@
     /* No topo da página o cabeçalho é transparente sobre o vídeo; ao rolar ganha o fundo de papel */
     .header { transition: background-color 0.4s, box-shadow 0.4s; }
     .header:not(.is-solid) { background: transparent; box-shadow: none; color: #fff; }
-    .header:not(.is-solid)::before { opacity: 0; }
     .header:not(.is-solid) nav { background: transparent; box-shadow: none; }
     .header:not(.is-solid) nav a { color: #fff; text-shadow: 0 1px 8px rgba(0, 0, 0, 0.7); }
     .header:not(.is-solid) .header__social a { color: #fff; background: rgba(255, 255, 255, 0.12); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.35); }
-    .header::before { transition: opacity 0.4s; }
+
 
     /* ───────── 1 · Introdução: vídeo + leque de capas ───────── */
     .hero { position: relative; }
     .hero__frame { position: relative; overflow: hidden; display: grid; align-items: center; min-height: 100svh; padding-block: calc(76px + clamp(36px, 5vh, 60px)) clamp(56px, 8vh, 96px); background: #2a1c10; color: #fbf3e4; }
-    .hero__media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: sepia(0.8) brightness(0.9); }
+    .hero__media { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: sepia(0.8) brightness(0.9); transform: translateY(var(--plx, 0px)) scale(1.12); will-change: transform; }
     .hero__frame::before { content: ""; position: absolute; inset: 0; z-index: 1; background: #0e2f80; mix-blend-mode: screen; }
     .hero__frame::after { content: ""; position: absolute; inset: 0; z-index: 1; background: linear-gradient(100deg, rgba(38, 26, 16, 0.86) 0%, rgba(38, 26, 16, 0.55) 50%, rgba(70, 40, 30, 0.5) 100%), radial-gradient(120% 90% at 50% 50%, transparent 55%, rgba(20, 12, 6, 0.7) 100%); }
     /* Brilho "aero" no topo e dois "swooshes" de vidro cruzando a base */
@@ -151,7 +148,7 @@
     .hero__title em.mark { color: #9cc0ff; }
     .mark path { stroke: var(--jaune); stroke-width: 10; }
     .hero__content { position: relative; z-index: 3; width: min(1060px, 100% - 2 * var(--gutter)); margin-inline: auto; display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 520px); align-items: center; column-gap: clamp(20px, 3vw, 48px); row-gap: 40px; }
-    .hero__text { display: grid; justify-items: start; gap: clamp(20px, 3.4vh, 34px); }
+    .hero__text { display: grid; justify-items: start; gap: clamp(20px, 3.4vh, 34px); transform: translateY(var(--plx, 0px)); }
     .hero__tag { background: linear-gradient(#ff7a7f, var(--rouge) 55%, #b7232a); color: #fff; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.5), 0 6px 14px -6px rgba(0, 0, 0, 0.6); }
     .hero__title { font-weight: 700; text-transform: uppercase; line-height: 1.08; letter-spacing: 0.02em; font-size: clamp(1.8rem, 3.3vw, 3rem); text-shadow: 0 2px 24px rgba(11, 24, 56, 0.6); }
     .hero__title span { display: block; overflow: hidden; padding: 0.16em 0 0.1em; margin: -0.16em 0 -0.1em; }
@@ -177,14 +174,14 @@
       position: absolute; left: 50%; top: 50%; width: clamp(200px, 19vw, 260px); aspect-ratio: 3 / 2; padding: 8px 8px 26px;
       display: block; text-decoration: none; color: var(--sepia); background: var(--paper); border-radius: 3px;
       box-shadow: 0 24px 40px -18px rgba(20, 12, 6, 0.85), 0 0 0 1px rgba(255, 255, 255, 0.35), inset 0 0 0 1px rgba(90, 70, 52, 0.12);
-      transform: translate(-50%, -50%) translate(var(--x), var(--y)) rotate(var(--rot));
+      transform: translate(-50%, -50%) translate(var(--x), calc(var(--y) + var(--plx, 0px))) rotate(var(--rot));
       transition: transform 0.6s var(--ease), box-shadow 0.6s;
     }
     .postal:nth-child(1) { --x: -50%; --y: -42%; --rot: -7deg; }
     .postal:nth-child(2) { --x: 50%; --y: -36%; --rot: 5deg; z-index: 1; }
     .postal:nth-child(3) { --x: -52%; --y: 42%; --rot: 4deg; z-index: 2; }
     .postal:nth-child(4) { --x: 48%; --y: 46%; --rot: -5deg; z-index: 3; }
-    .postal:hover { transform: translate(-50%, -50%) translate(var(--x), calc(var(--y) - 6%)) rotate(0deg) scale(1.05); z-index: 5; box-shadow: 0 34px 50px -18px rgba(20, 12, 6, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.45); }
+    .postal:hover { transform: translate(-50%, -50%) translate(var(--x), calc(var(--y) - 6% + var(--plx, 0px))) rotate(0deg) scale(1.05); z-index: 5; box-shadow: 0 34px 50px -18px rgba(20, 12, 6, 0.9), 0 0 0 1px rgba(255, 255, 255, 0.45); }
     /* Papel envelhecido: grão + manchas nas bordas */
     .postal::before { content: ""; position: absolute; inset: 0; border-radius: 3px; pointer-events: none; background: radial-gradient(110% 110% at 50% 50%, transparent 60%, rgba(120, 90, 50, 0.35) 100%); }
     .postal__photo { position: relative; display: block; width: 100%; height: 100%; overflow: hidden; background: #cbb798; }
@@ -211,7 +208,7 @@
     /* ───────── Carta antiga: um texto clássico sendo escrito, traduzido e anotado ───────── */
     .carta { filter: drop-shadow(0 26px 28px rgba(50, 30, 10, 0.45)) drop-shadow(0 2px 2px rgba(50, 30, 10, 0.25)); }
     .caderno {
-      position: relative; width: 100%; color: #3b2a1a; transform: rotate(-1.5deg);
+      position: relative; width: 100%; color: #3b2a1a; transform: rotate(-1.5deg) translateY(var(--plx, 0px));
       padding: 34px 30px 26px;
       background:
         radial-gradient(60% 40% at 12% 8%, rgba(120, 80, 30, 0.16), transparent 70%),
@@ -263,11 +260,11 @@
       --ink: #b0262c; position: relative; display: inline-block; padding: 8px 26px 4px; color: var(--ink);
       font-family: var(--pt); font-weight: 700; font-size: clamp(2.4rem, 4vw, 3.6rem); line-height: 1; letter-spacing: 0.02em;
       border: 3px solid var(--ink); border-radius: 10px; box-shadow: inset 0 0 0 3px var(--paper-stamp, transparent), inset 0 0 0 5px var(--ink);
-      transform: rotate(-4deg); opacity: 0.88;
+      transform: rotate(-4deg) translateY(var(--plx, 0px)); opacity: 0.88;
       -webkit-mask-image: radial-gradient(circle at 30% 40%, #000 60%, rgba(0, 0, 0, 0.65) 100%); mask-image: radial-gradient(circle at 30% 40%, #000 60%, rgba(0, 0, 0, 0.65) 100%);
     }
-    .stats li:nth-child(2) strong { --ink: #1c3f8f; transform: rotate(3deg); }
-    .stats li:nth-child(3) strong { --ink: #b0262c; transform: rotate(-2deg); }
+    .stats li:nth-child(2) strong { --ink: #1c3f8f; transform: rotate(3deg) translateY(var(--plx, 0px)); }
+    .stats li:nth-child(3) strong { --ink: #b0262c; transform: rotate(-2deg) translateY(var(--plx, 0px)); }
     .stats li > span { display: block; max-width: 24ch; font-size: 1.05rem; font-style: italic; color: var(--nuit); }
     .sample { display: inline-block; margin-left: 8px; padding: 1px 8px; border-radius: 999px; background: rgba(255, 255, 255, 0.25); font-size: 0.65rem; letter-spacing: 0.1em; text-transform: uppercase; }
 
@@ -293,7 +290,7 @@
     .place__big { font-size: clamp(1.4rem, 2.2vw, 1.9rem); font-weight: 700; line-height: 1.15; }
     .place__big em { font-style: normal; color: var(--bleu); }
     .place__addr { margin: 12px 0 18px; color: var(--muted); }
-    .place__map { position: relative; aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden; box-shadow: inset 0 0 0 1px rgba(14, 26, 54, 0.12); }
+    .place__map { position: relative; aspect-ratio: 16 / 9; border-radius: 12px; overflow: hidden; transform: translateY(var(--plx, 0px)); box-shadow: inset 0 0 0 1px rgba(14, 26, 54, 0.12); }
     .place__map iframe { width: 100%; height: 100%; border: 0; }
     .proof__next { display: none; }
 
@@ -338,13 +335,13 @@
     }
     .motifs li::before { content: ""; position: absolute; inset: 0 0 auto 0; height: 6px; background: var(--tricolor); }
     .motifs.in li { opacity: 1; transform: none; }
-    .motifs svg { width: 74px; height: 74px; padding: 14px; border-radius: 50%; color: var(--bleu); background: radial-gradient(circle at 50% 30%, #fff, #dfe8f8); box-shadow: inset 0 1px 0 #fff, inset 0 -6px 12px rgba(27, 86, 201, 0.12), 0 8px 16px -10px rgba(14, 26, 54, 0.5); margin-bottom: 8px; }
+    .motifs svg { transform: translateY(var(--plx, 0px)); width: 74px; height: 74px; padding: 14px; border-radius: 50%; color: var(--bleu); background: radial-gradient(circle at 50% 30%, #fff, #dfe8f8); box-shadow: inset 0 1px 0 #fff, inset 0 -6px 12px rgba(27, 86, 201, 0.12), 0 8px 16px -10px rgba(14, 26, 54, 0.5); margin-bottom: 8px; }
     .motifs strong { font-size: 1.2rem; font-weight: 500; }
     .motifs span { font-size: 0.82rem; color: var(--muted); }
 
     /* ───────── 5 · Planos: cada plano como uma "edição" ───────── */
-    .pricing { position: relative; padding-block: clamp(52px, 7vh, 84px); color: var(--white); background: linear-gradient(180deg, #14306f, var(--nuit) 70%); overflow: hidden; }
-    .pricing::before { content: ""; position: absolute; inset: 0; background: url("images/louvre.webp") center / cover; opacity: 0.2; filter: sepia(1) contrast(0.9); }
+    .pricing { position: relative; padding-block: clamp(52px, 7vh, 84px); color: var(--white); background: linear-gradient(180deg, #14306f, var(--nuit) 70%); overflow: hidden; clip-path: inset(0); }
+    .pricing::before { content: ""; position: fixed; inset: 0; z-index: 0; background: url("images/louvre.webp") center / cover; opacity: 0.22; filter: sepia(1) contrast(0.9); pointer-events: none; }
     .pricing::after { content: ""; position: absolute; inset: 0; background: radial-gradient(120% 60% at 50% -10%, rgba(255, 255, 255, 0.22), transparent 60%); pointer-events: none; }
     .pricing .container { position: relative; }
     .plans { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; margin-top: clamp(36px, 6vh, 56px); }
@@ -412,7 +409,7 @@
     @media (max-width: 980px) {
       .hero__content { grid-template-columns: 1fr; row-gap: 24px; }
       .postais { height: auto; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; padding: 12px 0 20px; }
-      .postal, .postal:nth-child(n) { position: relative; left: auto; top: auto; width: 100%; --x: 0; --y: 0; transform: rotate(var(--rot)); }
+      .postal, .postal:nth-child(n) { position: relative; left: auto; top: auto; width: 100%; --x: 0; --y: 0; transform: rotate(var(--rot)) translateY(var(--plx, 0px)); }
       .postal:hover { transform: rotate(0deg) translateY(-6px); }
       .proof__intro { grid-template-columns: 1fr; }
       .caderno { max-width: 520px; }
@@ -471,7 +468,6 @@
 </head>
 
 <body>
-  <div class="progress" aria-hidden="true"></div>
 
   <header class="header">
     <div class="container">
@@ -493,7 +489,7 @@
     <!-- 1 · Introdução: vídeo escurecido + título + leque de capas Flexion -->
     <section id="inicio" class="hero" data-dark>
       <div class="hero__frame">
-        <video class="hero__media" poster="images/paris-hero.webp" autoplay muted loop playsinline webkit-playsinline preload="auto" disablepictureinpicture disableremoteplayback aria-hidden="true">
+        <video class="hero__media" data-plx="0.28" poster="images/paris-hero.webp" autoplay muted loop playsinline webkit-playsinline preload="auto" disablepictureinpicture disableremoteplayback aria-hidden="true">
           <source src="video/paris-mobile.mp4" type="video/mp4" media="(max-width: 760px)" />
           <source src="video/paris.mp4" type="video/mp4" />
         </video>
@@ -505,7 +501,7 @@
         </a>
 
         <div class="hero__content">
-          <div class="hero__text">
+          <div class="hero__text" data-plx="0.12">
             <h1 class="hero__title">
               <span><b>Aqui você</b></span>
               <span><b>fala a língua</b></span>
@@ -519,25 +515,25 @@
 
           <!-- Cartões-postais (um por idioma); clicar leva ao idioma na seção presa -->
           <div class="postais" aria-label="Cartões-postais">
-            <a class="postal" href="#idiomas" data-i="0">
+            <a class="postal" href="#idiomas" data-i="0" data-plx="0.05">
               <span class="postal__photo"><img src="images/paris-rue-wide.webp" alt="" width="1760" height="990" loading="eager" decoding="async" /><span class="postal__cap" lang="fr">Bonjour de Paris</span></span>
               <span class="postal__stamp"><svg viewBox="0 0 90 60" aria-hidden="true"><use href="#f-fr" /></svg></span>
               <span class="postal__mark"><svg viewBox="0 0 74 74" aria-hidden="true"><defs><path id="arc" d="M37 37 m-27 0 a27 27 0 1 1 54 0 a27 27 0 1 1 -54 0" /></defs><text><textPath href="#arc">FLEXION · UBERLÂNDIA · FLEXION ·</textPath></text></svg></span>
               <span class="postal__foot"><span>Carte postale</span><span>Français</span></span>
             </a>
-            <a class="postal" href="#idiomas" data-i="1">
+            <a class="postal" href="#idiomas" data-i="1" data-plx="0.11">
               <span class="postal__photo"><img src="images/newyork-wide.webp" alt="" width="1760" height="990" loading="eager" decoding="async" /><span class="postal__cap" lang="en">Hello from New York</span></span>
               <span class="postal__stamp"><svg viewBox="0 0 190 100" aria-hidden="true"><use href="#f-us" /></svg></span>
               <span class="postal__mark"><svg viewBox="0 0 74 74" aria-hidden="true"><text><textPath href="#arc">FLEXION · UBERLÂNDIA · FLEXION ·</textPath></text></svg></span>
               <span class="postal__foot"><span>Post card</span><span>English</span></span>
             </a>
-            <a class="postal" href="#idiomas" data-i="2">
+            <a class="postal" href="#idiomas" data-i="2" data-plx="0.08">
               <span class="postal__photo"><img src="images/berlin-wide.webp" alt="" width="1760" height="990" loading="eager" decoding="async" /><span class="postal__cap" lang="de">Grüße aus Berlin</span></span>
               <span class="postal__stamp"><svg viewBox="0 0 90 54" aria-hidden="true"><use href="#f-de" /></svg></span>
               <span class="postal__mark"><svg viewBox="0 0 74 74" aria-hidden="true"><text><textPath href="#arc">FLEXION · UBERLÂNDIA · FLEXION ·</textPath></text></svg></span>
               <span class="postal__foot"><span>Postkarte</span><span>Deutsch</span></span>
             </a>
-            <a class="postal" href="#idiomas" data-i="3">
+            <a class="postal" href="#idiomas" data-i="3" data-plx="0.15">
               <span class="postal__photo"><img src="images/rio-wide.webp" alt="" width="1760" height="990" loading="eager" decoding="async" /><span class="postal__cap">Um abraço do Rio</span></span>
               <span class="postal__stamp"><svg viewBox="0 0 720 504" aria-hidden="true"><use href="#f-br" /></svg></span>
               <span class="postal__mark"><svg viewBox="0 0 74 74" aria-hidden="true"><text><textPath href="#arc">FLEXION · UBERLÂNDIA · FLEXION ·</textPath></text></svg></span>
@@ -562,7 +558,7 @@
           </div>
 
           <!-- Caderno: texto clássico traduzido e anotado (conteúdo preenchido pelo script) -->
-          <div class="carta reveal"><aside class="caderno" id="caderno" aria-label="Exemplo de aula: tradução comentada">
+          <div class="carta reveal"><aside class="caderno" id="caderno" data-plx="0.07" aria-label="Exemplo de aula: tradução comentada">
             <div class="caderno__tab"><span id="cad-src"></span><span id="cad-par"></span></div>
             <div class="caderno__page">
               <p class="caderno__texte" id="cad-texte"></p>
@@ -585,7 +581,7 @@
             <p class="place__addr">Rua Francisco Vicente Ferreira, 180<br />Uberlândia — MG</p>
             <a class="arrow-link" href="https://www.google.com/maps/dir/?api=1&destination=Rua+Francisco+Vicente+Ferreira+180,+Uberl%C3%A2ndia+-+MG" target="_blank" rel="noopener noreferrer">Como chegar <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><use href="#i-arrow" /></svg></a>
           </div>
-          <div class="place__map">
+          <div class="place__map" data-plx="0.05">
             <iframe
               src="https://www.google.com/maps?q=Rua+Francisco+Vicente+Ferreira+180,+Uberl%C3%A2ndia+-+MG&z=15&output=embed"
               title="Mapa: Flexion, Rua Francisco Vicente Ferreira 180, Uberlândia"
@@ -646,10 +642,10 @@
         </h2>
 
         <ul class="motifs">
-          <li style="--i:0"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 28h44v26H10zM10 18h44v10H10zM19 18l-5 10M31 18l-5 10M43 18l-5 10" /></svg><strong lang="fr">le cinéma</strong><span>o cinema</span></li>
-          <li style="--i:1"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 28h30v10a15 15 0 0 1-30 0zM44 31h4a6 6 0 0 1 0 12h-6M10 58h38M24 10c-3 4 3 6 0 10M34 10c-3 4 3 6 0 10" /></svg><strong lang="fr">le café</strong><span>o café</span></li>
-          <li style="--i:2"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M32 18c-7-5-16-5-24-3v34c8-2 17-2 24 3 7-5 16-5 24-3V15c-8-2-17-2-24 3zM32 18v34" /></svg><strong lang="fr">les livres</strong><span>os livros</span></li>
-          <li style="--i:3"><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M58 8 6 28l18 8M58 8 32 56l-8-20M58 8 24 36" /></svg><strong lang="fr">le voyage</strong><span>a viagem</span></li>
+          <li style="--i:0"><svg data-plx="0.04" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 28h44v26H10zM10 18h44v10H10zM19 18l-5 10M31 18l-5 10M43 18l-5 10" /></svg><strong lang="fr">le cinéma</strong><span>o cinema</span></li>
+          <li style="--i:1"><svg data-plx="0.07" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 28h30v10a15 15 0 0 1-30 0zM44 31h4a6 6 0 0 1 0 12h-6M10 58h38M24 10c-3 4 3 6 0 10M34 10c-3 4 3 6 0 10" /></svg><strong lang="fr">le café</strong><span>o café</span></li>
+          <li style="--i:2"><svg data-plx="0.05" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M32 18c-7-5-16-5-24-3v34c8-2 17-2 24 3 7-5 16-5 24-3V15c-8-2-17-2-24 3zM32 18v34" /></svg><strong lang="fr">les livres</strong><span>os livros</span></li>
+          <li style="--i:3"><svg data-plx="0.08" viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M58 8 6 28l18 8M58 8 32 56l-8-20M58 8 24 36" /></svg><strong lang="fr">le voyage</strong><span>a viagem</span></li>
         </ul>
       </div>
     </section>
@@ -854,7 +850,7 @@
     NUMEROS.forEach((n, i) => {
       const li = document.createElement("li");
       li.style.setProperty("--i", i);
-      li.innerHTML = '<strong data-count="' + n.valor + '" data-suffix="' + (n.sufixo || "") + '">0' + (n.sufixo || "") + "</strong><span></span>";
+      li.innerHTML = '<strong data-plx="' + (0.05 + i * 0.03) + '" data-count="' + n.valor + '" data-suffix="' + (n.sufixo || "") + '">0' + (n.sufixo || "") + "</strong><span></span>";
       li.querySelector("span").textContent = n.rotulo;
       li.querySelector("span").insertAdjacentHTML("beforeend", ETIQUETA);
       stats.append(li);
@@ -923,8 +919,8 @@
     const $ = (s) => document.querySelector(s);
     const $$ = (s) => [...document.querySelectorAll(s)];
 
-    const bar = $(".progress");
     const heroScroll = $(".hero__scroll"), header = $(".header");
+    const plx = $$("[data-plx]").map((el) => ({ el, k: +el.dataset.plx, v: 0 }));
     const pin = $(".pin");
     const photos = $$(".pin__photo"), names = $$(".pin__list a"), ctas = $$(".pin__cta a"), greetings = $$(".pin__greetings span");
     const N = photos.length;
@@ -938,11 +934,19 @@
 
     function update() {
       const vh = innerHeight, y = scrollY;
-      bar.style.transform = "scaleX(" + clamp(y / (document.documentElement.scrollHeight - vh)) + ")";
 
       // Introdução: fica inteira; só o aviso de rolagem some quando a página desce
       heroScroll.style.visibility = y > 60 ? "hidden" : "visible";
       header.classList.toggle("is-solid", y > 40);
+
+      // Parallax: cada elemento desloca uma fração da distância ao centro da tela
+      if (!reduced) plx.forEach((it) => {
+        const r = it.el.getBoundingClientRect();
+        const top = r.top - it.v, bottom = r.bottom - it.v;      // posição sem o deslocamento atual
+        if (bottom < -200 || top > vh + 200) return;
+        it.v = -(top + r.height / 2 - vh / 2) * it.k;
+        it.el.style.setProperty("--plx", it.v.toFixed(1) + "px");
+      });
 
       // Idiomas: a rolagem conduz a cortina; cada troca consome --step de rolagem
       const span = pin.offsetHeight - vh;                       // = 3 * step
