@@ -327,23 +327,28 @@
 
     /* ───────── 4 · Cultura e jornada: fichas com brilho ───────── */
     .journey { padding-block: clamp(52px, 7vh, 84px); }
-    .motifs { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; margin-top: clamp(40px, 6vh, 64px); }
-    .motifs li { display: grid; justify-items: center; text-align: center; gap: 18px; opacity: 0; transform: translateY(18px); transition: opacity 0.8s var(--ease), transform 0.8s var(--ease); transition-delay: calc(var(--i) * 0.12s); }
+    /* Itinerário: três marcos ligados por uma rota tracejada */
+    .motifs { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; margin-top: clamp(40px, 6vh, 64px); }
+    .motifs li { display: grid; justify-items: center; text-align: center; gap: 4px; opacity: 0; transform: translateY(18px); transition: opacity 0.8s var(--ease), transform 0.8s var(--ease); transition-delay: calc(var(--i) * 0.16s); }
     .motifs.in li { opacity: 1; transform: none; }
-    /* Carimbos de passaporte: tinta azul e vermelha sobre o papel, cada um de um formato */
-    .stamp {
-      --ink: #1c3f8f; position: relative; display: grid; justify-items: center; align-content: center; gap: 6px; width: 170px; height: 170px; padding: 14px;
-      color: var(--ink); border: 3px solid var(--ink); box-shadow: inset 0 0 0 3px transparent, inset 0 0 0 5px var(--ink);
-      transform: rotate(var(--rot, -6deg)) translateY(var(--plx, 0px)); opacity: 0.86;
-      -webkit-mask-image: radial-gradient(circle at 35% 40%, #000 55%, rgba(0, 0, 0, 0.6) 100%); mask-image: radial-gradient(circle at 35% 40%, #000 55%, rgba(0, 0, 0, 0.6) 100%);
-    }
-    .stamp--round { border-radius: 50%; }
-    .stamp--rect { --ink: #b0262c; --rot: 4deg; border-radius: 12px; width: 190px; height: 150px; }
-    .stamp--oval { --rot: -3deg; border-radius: 50% / 40%; width: 200px; height: 150px; }
-    .stamp small { font-family: var(--ui); font-size: 0.66rem; font-weight: 800; letter-spacing: 0.22em; text-transform: uppercase; }
-    .stamp svg { width: 44px; height: 44px; }
-    .stamp em { font-family: var(--ui); font-size: 0.56rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; font-style: normal; opacity: 0.85; }
-    .motifs strong { max-width: 24ch; font-size: 1.15rem; font-weight: 700; line-height: 1.3; color: var(--nuit); }
+    .motifs__path { position: absolute; inset: 0 0 auto 0; height: 220px; display: block; opacity: 1; transform: none; pointer-events: none; }
+    .motifs__path svg { width: 100%; height: 100%; }
+    .motifs__path path { fill: none; stroke: var(--rouge); stroke-width: 2; stroke-linecap: round; stroke-dasharray: 0.012 0.008; stroke-dashoffset: 1; opacity: 0.55; transition: stroke-dashoffset 2.4s var(--ease) 0.2s; }
+    .motifs.in .motifs__path path { stroke-dashoffset: 0; }
+    .node { position: relative; width: 200px; height: 200px; display: grid; place-items: center; color: var(--bleu); transform: translateY(var(--plx, 0px)); }
+    .node__ring { position: absolute; inset: 0; width: 100%; height: 100%; fill: none; stroke: var(--bleu); }
+    .node__ring .r1 { stroke-width: 1.2; stroke-dasharray: 3 6; opacity: 0.55; transform-origin: 50% 50%; animation: gira 60s linear infinite; }
+    .node__ring .r2 { stroke-width: 2; fill: rgba(255, 255, 255, 0.55); }
+    .node__ring .ticks { stroke-width: 2; opacity: 0.8; }
+    @keyframes gira { to { transform: rotate(360deg); } }
+    .node__icon { position: relative; width: 96px; height: 96px; transition: transform 0.5s var(--ease); }
+    .node__icon .ink { fill: var(--rouge); }
+    .node:hover .node__icon { transform: translateY(-4px) scale(1.06); }
+    .node:hover .node__ring .r1 { animation-duration: 12s; }
+    .node__n { position: absolute; right: 14px; top: 14px; display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--rouge); color: var(--white); font-family: var(--ui); font-size: 0.72rem; font-weight: 800; letter-spacing: 0.06em; box-shadow: 0 0 0 4px var(--bg), 0 6px 14px -6px rgba(0, 0, 0, 0.5); }
+    .motifs strong { margin-top: 14px; max-width: 22ch; font-size: 1.2rem; font-weight: 700; line-height: 1.3; color: var(--nuit); }
+    .motifs span { font-size: 1rem; font-style: italic; color: var(--bleu); }
+    .motifs li > span[lang="fr"]::before, .motifs li > span[lang="fr"]::after { content: "—"; margin: 0 8px; color: var(--rouge); opacity: 0.6; }
     /* ───────── 5 · Planos: cada plano como uma "edição" ───────── */
     .pricing { position: relative; padding-block: clamp(52px, 7vh, 84px); color: var(--white); background: linear-gradient(180deg, #14306f, var(--nuit) 70%); overflow: hidden; clip-path: inset(0); }
     .pricing::before { content: ""; position: fixed; inset: 0; z-index: 0; background: url("images/louvre.webp") center / cover; opacity: 0.22; filter: sepia(1) contrast(0.9); pointer-events: none; }
@@ -419,6 +424,8 @@
       .proof__intro { grid-template-columns: 1fr; }
       .caderno { max-width: 520px; }
       .motifs { grid-template-columns: 1fr; gap: 36px; }
+      .motifs__path { display: none; }
+      .node { width: 170px; height: 170px; }
     }
     @media (max-width: 760px) {
       .header .container { grid-template-columns: auto 1fr; height: 72px; }
@@ -466,7 +473,8 @@
       .pin__greetings i, .pin__cta a, .pin__list a::after, .pin__photo, .pin__photo img, .pin__photo::after, .postal { transition: none; }
       .hero__scroll svg { animation: none; }
       .lines b, .stats li, .reviews li, .motifs li, .plans > li { transition: none; transform: none; opacity: 1; }
-      .stamp { transform: none; }
+      .node__ring .r1 { animation: none; }
+      .motifs__path path { transition: none; stroke-dashoffset: 0; }
       .reveal, .hero__title b, .hero .btn, .hero__scroll, .hero__flags, .hero__stickers, .postais, .carta { animation: none; transition: none; opacity: 1; transform: none; }
       .caderno__texte .w, .caderno__note, .caderno__ink path, .caderno__pen { transition: none; animation: none; }
     }
@@ -648,17 +656,50 @@
         </h2>
 
         <ul class="motifs">
+          <li class="motifs__path" aria-hidden="true"><svg viewBox="0 0 1000 220" preserveAspectRatio="none"><path pathLength="1" d="M60 110 C 250 20, 420 200, 500 110 S 780 20, 940 110" /></svg></li>
           <li style="--i:0">
-            <span class="stamp stamp--round" data-plx="0.05"><small lang="fr">le voyage</small><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M58 8 6 28l18 8M58 8 32 56l-8-20M58 8 24 36" /></svg><em>Flexion · Uberlândia</em></span>
+            <div class="node" data-plx="0.05">
+              <svg class="node__ring" viewBox="0 0 200 200" aria-hidden="true"><circle class="r1" cx="100" cy="100" r="94" /><circle class="r2" cx="100" cy="100" r="78" /><path class="ticks" d="M100 2v10M100 188v10M2 100h10M188 100h10M30.7 30.7l7 7M162.3 162.3l7 7M169.3 30.7l-7 7M37.7 162.3l-7 7" /></svg>
+              <svg class="node__icon" viewBox="0 0 64 64" aria-hidden="true">
+                <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="28" cy="36" r="20" /><ellipse cx="28" cy="36" rx="8.5" ry="20" /><path d="M8.5 36h39M11 26h34M11 46h34" />
+                </g>
+                <path class="ink" d="M62 14.5v-2l-8.5-5V1.5a1.5 1.5 0 0 0-3 0V7.5L42 12.5v2l8.5-2.5V18L48 19.5V21l4-1 4 1v-1.5L53.5 18v-6l8.5 2.5z" />
+                <path fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="2.5 3" d="M20 8c8-3 16-3 26 4" opacity="0.7" />
+              </svg>
+              <b class="node__n">01</b>
+            </div>
             <strong>Preparação para conversa em viagens internacionais</strong>
+            <span lang="fr">le voyage</span>
           </li>
           <li style="--i:1">
-            <span class="stamp stamp--rect" data-plx="0.08"><small lang="fr">le matériel</small><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M32 18c-7-5-16-5-24-3v34c8-2 17-2 24 3 7-5 16-5 24-3V15c-8-2-17-2-24 3zM32 18v34" /></svg><em>Flexion · Uberlândia</em></span>
+            <div class="node" data-plx="0.08">
+              <svg class="node__ring" viewBox="0 0 200 200" aria-hidden="true"><circle class="r1" cx="100" cy="100" r="94" /><circle class="r2" cx="100" cy="100" r="78" /><path class="ticks" d="M100 2v10M100 188v10M2 100h10M188 100h10M30.7 30.7l7 7M162.3 162.3l7 7M169.3 30.7l-7 7M37.7 162.3l-7 7" /></svg>
+              <svg class="node__icon" viewBox="0 0 64 64" aria-hidden="true">
+                <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M6 14c8-4 17-4 26 2 9-6 18-6 26-2v34c-8-4-17-4-26 2-9-6-18-6-26-2z" /><path d="M32 16v34" />
+                  <path d="M12 24c5-2 10-2 14 0M12 32c5-2 10-2 14 0M12 40c5-2 10-2 14 0M38 24c5-2 10-2 14 0M38 32c5-2 10-2 14 0" opacity="0.7" />
+                </g>
+                <path class="ink" d="M42 58l16-16 4.5 4.5-16 16-6.5 2z" /><path fill="none" stroke="#fff" stroke-width="1" d="M55 45l4.5 4.5" opacity="0.7" />
+              </svg>
+              <b class="node__n">02</b>
+            </div>
             <strong>Material didático completo</strong>
+            <span lang="fr">le matériel</span>
           </li>
           <li style="--i:2">
-            <span class="stamp stamp--oval" data-plx="0.06"><small lang="fr">les examens</small><svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 8h36v34H14zM22 18h20M22 26h20M22 34h12M32 42v14M25 56l7-4 7 4" /></svg><em>Flexion · Uberlândia</em></span>
+            <div class="node" data-plx="0.06">
+              <svg class="node__ring" viewBox="0 0 200 200" aria-hidden="true"><circle class="r1" cx="100" cy="100" r="94" /><circle class="r2" cx="100" cy="100" r="78" /><path class="ticks" d="M100 2v10M100 188v10M2 100h10M188 100h10M30.7 30.7l7 7M162.3 162.3l7 7M169.3 30.7l-7 7M37.7 162.3l-7 7" /></svg>
+              <svg class="node__icon" viewBox="0 0 64 64" aria-hidden="true">
+                <g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <rect x="6" y="10" width="52" height="36" rx="3" /><path d="M14 20h36M14 27h36M14 34h18" opacity="0.75" /><path d="M10 14h44M10 42h30" opacity="0.35" />
+                </g>
+                <path class="ink" d="M40 47l-3.5 14 8.5-4.5 8.5 4.5-3.5-14z" /><circle class="ink" cx="45" cy="40" r="8" /><circle cx="45" cy="40" r="4.5" fill="none" stroke="#fff" stroke-width="1.2" opacity="0.8" />
+              </svg>
+              <b class="node__n">03</b>
+            </div>
             <strong>Exames TOEFL, DELF e Cambridge</strong>
+            <span lang="fr">les examens</span>
           </li>
         </ul>
       </div>
